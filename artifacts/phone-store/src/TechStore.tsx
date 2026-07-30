@@ -1042,6 +1042,7 @@ export default function TechStore() {
           <p className="text-muted-foreground text-sm mb-4 max-w-sm mx-auto leading-relaxed">
             Your <span className="text-foreground font-medium">{model?.name}</span> is being processed. Within <span className="text-foreground font-medium">48 hours</span> we'll send you photos of your actual phone and its battery percentage — before it ships.
           </p>
+          <p className="text-xs text-primary/80 mb-4">Your order receipt has been emailed to {customer.email}.</p>
           <div className="bg-card/50 border border-border/30 rounded-2xl p-4 mb-4 text-left space-y-1.5">
             <div className="flex justify-between text-sm"><span className="text-muted-foreground">Order Number</span><span className="font-mono text-primary font-semibold">{orderNumber}</span></div>
             <div className="flex justify-between text-sm"><span className="text-muted-foreground">Payment Ref</span><span className="font-mono text-primary font-semibold">{paymentRef}</span></div>
