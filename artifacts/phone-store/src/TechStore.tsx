@@ -15,10 +15,13 @@ type PhoneModel    = { name: string; colors: string[]; storages: StorageOption[]
 type BrandData     = { series: Record<string, PhoneModel[]> };
 type CustomerDetails = {
   name: string;
-  contactDetails: string;
   phone: string;
   email: string;
-  address: string;
+  country: 'Botswana';
+  cityTownVillage: string;
+  ward: string;
+  plotNumber: string;
+  additionalDeliveryInfo: string;
 };
 
 // ─── Business Info ────────────────────────────────────────────────────────────
@@ -62,6 +65,8 @@ const PAYMENT_INFO = {
     accountType:   'Current Account',
   },
 } as const;
+
+const MAX_PROOF_FILE_BYTES = 8 * 1024 * 1024;
 
 // ─── Phone Images (per model) ─────────────────────────────────────────────────
 // All images are local transparent PNGs in /public/phones (backgrounds removed).
@@ -509,10 +514,13 @@ export default function TechStore() {
   const [color,   setColor]   = useState<string | null>(null);
   const [customer, setCustomer] = useState<CustomerDetails>({
     name: '',
-    contactDetails: '',
     phone: '',
     email: '',
-    address: '',
+    country: 'Botswana',
+    cityTownVillage: '',
+    ward: '',
+    plotNumber: '',
+    additionalDeliveryInfo: '',
   });
 
   // Inline selection state on the model step
@@ -537,7 +545,10 @@ export default function TechStore() {
     setDirection(-1);
     setBrand(null); setSeries(null); setModel(null); setStorage(null); setColor(null);
     setSelectedModelName(null); setPayMethod(null); setProofFile(null); setStep(0);
-    setCustomer({ name: '', contactDetails: '', phone: '', email: '', address: '' });
+    setCustomer({
+      name: '', phone: '', email: '', country: 'Botswana',
+      cityTownVillage: '', ward: '', plotNumber: '', additionalDeliveryInfo: '',
+    });
   };
 
   const crumbs: { label: string; step: number }[] = [];
@@ -551,17 +562,88 @@ export default function TechStore() {
     { id: 'absa',   label: 'ABSA Bank Transfer',  icon: '🏦' },
   ];
 
-  const customerComplete = Object.values(customer).every(value => value.trim().length > 0);
+  const customerComplete = [
+    customer.name,
+    customer.phone,
+    customer.email,
+    customer.cityTownVillage,
+    customer.ward,
+    customer.plotNumber,
+    customer.additionalDeliveryInfo,
+  ].every(value => value.trim().length > 0);
   const canConfirm = () => customerComplete && payMethod !== null && proofFile !== null;
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const updateCustomer = (field: keyof CustomerDetails, value: string) => {
     setCustomer(current => ({ ...current, [field]: value }));
   };
 
+  const submitOrder = async () => {
+    if (!model || !storage || !color || !payMethod || !proofFile || !canConfirm() || isSubmitting) return;
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      const bytes = new Uint8Array(await proofFile.arrayBuffer());
+      let binary = '';
+      const chunkSize = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunkSize) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+      }
+
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderNumber,
+          paymentRef,
+          product: {
+            brand,
+            series,
+            model: model.name,
+            storage: storage.size,
+            color,
+            price: storage.price,
+          },
+          customer,
+          paymentMethod: payMethod,
+          proof: {
+            fileName: proofFile.name,
+            contentType: proofFile.type || 'application/octet-stream',
+            contentBase64: btoa(binary),
+          },
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(typeof result.error === 'string' ? result.error : 'We could not send your order. Please try again.');
+      }
+      advance(4);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'We could not send your order. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const renderUpload = () => (
     <div className="pt-2">
       <p className="text-xs text-muted-foreground mb-2">Upload proof of payment:</p>
-      <input ref={fileRef} type="file" accept="image/*,.pdf" className="hidden" onChange={e => setProofFile(e.target.files?.[0] ?? null)} />
+      <input ref={fileRef} type="file" accept="image/*,.pdf" className="hidden" onChange={e => {
+        const file = e.target.files?.[0] ?? null;
+        if (!file) {
+          setProofFile(null);
+          return;
+        }
+        if (file.size > MAX_PROOF_FILE_BYTES) {
+          setProofFile(null);
+          setSubmitError('Proof of payment must be smaller than 8MB.');
+          e.target.value = '';
+          return;
+        }
+        setProofFile(file);
+        setSubmitError(null);
+      }} />
       {proofFile ? (
         <div className="flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-xl px-3 py-2">
           <CheckCircle2 className="w-4 h-4 text-green-400 flex-shrink-0" />
@@ -829,6 +911,7 @@ export default function TechStore() {
                 <span className="text-xs text-muted-foreground">{color}</span>
               </div>
               <p className="text-2xl font-semibold text-primary mt-3">{formatPrice(storage.price)}</p>
+              <p className="text-[11px] text-green-400/80 mt-1">Price includes all costs, customs, and shipping.</p>
             </div>
             <div className="w-20 h-28 flex-shrink-0 flex items-end justify-end">
               {(() => {
@@ -867,12 +950,6 @@ export default function TechStore() {
                 className="mt-1.5 w-full rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
             </label>
             <label className="text-xs text-muted-foreground">
-              Contact details
-              <input value={customer.contactDetails} onChange={e => updateCustomer('contactDetails', e.target.value)}
-                placeholder="WhatsApp or preferred contact" required
-                className="mt-1.5 w-full rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
-            </label>
-            <label className="text-xs text-muted-foreground">
               Phone number
               <input type="tel" value={customer.phone} onChange={e => updateCustomer('phone', e.target.value)}
                 placeholder="+267 7X XXX XXX" required
@@ -884,10 +961,36 @@ export default function TechStore() {
                 placeholder="you@example.com" required
                 className="mt-1.5 w-full rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
             </label>
+            <div className="sm:col-span-2 pt-2">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Delivery address <span className="text-primary normal-case tracking-normal">(O nna kae?)</span></p>
+            </div>
+            <label className="text-xs text-muted-foreground">
+              Country of residence
+              <input value={customer.country} readOnly aria-readonly="true"
+                className="mt-1.5 w-full cursor-not-allowed rounded-xl border border-border/40 bg-muted/20 px-3 py-2.5 text-sm text-muted-foreground outline-none" />
+            </label>
+            <label className="text-xs text-muted-foreground">
+              City / Town / Village
+              <input value={customer.cityTownVillage} onChange={e => updateCustomer('cityTownVillage', e.target.value)}
+                placeholder="e.g. Palapye" required
+                className="mt-1.5 w-full rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
+            </label>
+            <label className="text-xs text-muted-foreground">
+              Ward
+              <input value={customer.ward} onChange={e => updateCustomer('ward', e.target.value)}
+                placeholder="Ward name or number" required
+                className="mt-1.5 w-full rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
+            </label>
+            <label className="text-xs text-muted-foreground">
+              Plot number
+              <input value={customer.plotNumber} onChange={e => updateCustomer('plotNumber', e.target.value)}
+                placeholder="Plot / house number" required
+                className="mt-1.5 w-full rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
+            </label>
             <label className="text-xs text-muted-foreground sm:col-span-2">
-              Delivery address <span className="text-primary">(Place of residence — O nna kae?)</span>
-              <textarea value={customer.address} onChange={e => updateCustomer('address', e.target.value)}
-                placeholder="Village / town, ward, plot or house number, and any delivery directions" required rows={2}
+              Additional delivery information
+              <textarea value={customer.additionalDeliveryInfo} onChange={e => updateCustomer('additionalDeliveryInfo', e.target.value)}
+                placeholder="Apartment number, street address, or delivery directions" required rows={2}
                 className="mt-1.5 w-full resize-none rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
             </label>
           </div>
@@ -910,11 +1013,16 @@ export default function TechStore() {
           <AnimatePresence mode="wait">{payMethod && renderPaymentDetails()}</AnimatePresence>
         </div>
 
-        <button onClick={() => advance(4)} disabled={!canConfirm()}
+        {submitError && (
+          <p role="alert" className="text-sm text-red-300 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 flex-shrink-0">
+            {submitError}
+          </p>
+        )}
+        <button onClick={submitOrder} disabled={!canConfirm() || isSubmitting}
           className="w-full py-4 rounded-2xl font-semibold text-base transition-all flex items-center justify-center gap-2 flex-shrink-0
             bg-primary text-primary-foreground hover:opacity-90 hover:-translate-y-0.5
             disabled:opacity-30 disabled:cursor-not-allowed disabled:translate-y-0">
-           {!customerComplete ? 'Complete your details to continue' : !payMethod ? 'Choose a payment method' : !proofFile ? 'Upload proof to confirm' : 'Confirm Order'}
+           {isSubmitting ? 'Sending order…' : !customerComplete ? 'Complete your details to continue' : !payMethod ? 'Choose a payment method' : !proofFile ? 'Upload proof to confirm' : 'Confirm Order'}
         </button>
       </div>
     );
