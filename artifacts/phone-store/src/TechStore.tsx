@@ -4,7 +4,8 @@ import {
   ArrowLeft, CheckCircle2, Upload, X, Copy, Check, ExternalLink, Info,
   Shield, Battery, Unlock, Truck, Camera, RotateCcw, ChevronDown
 } from 'lucide-react';
-import { SiApple, SiSamsung, SiGoogle, SiFacebook, SiInstagram, SiTiktok, SiWhatsapp } from 'react-icons/si';
+import { Linkedin } from 'lucide-react';
+import { SiApple, SiSamsung, SiGoogle, SiInstagram, SiTiktok, SiWhatsapp } from 'react-icons/si';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -17,11 +18,18 @@ type BrandData     = { series: Record<string, PhoneModel[]> };
 const BUSINESS = {
   name:     'Tech Inc',
   tagline:  'Certified refurbished phones with guaranteed battery health, delivered across Botswana.',
+  slogan:   'Start small, Start scrappy, but whatever you do, JUST START!',
   whatsapp: '+267 74066703',
   email:    'happymanenterprise@outlook.com',
   tiktok:   '@Happymanenterprisebw',
-  facebook: '@HappyManEnterprise',
-  instagram:'@happymanenterprise',
+  owner:     'Lekopane Kenalemang',
+  linkedin:  'https://www.linkedin.com/in/special-lekopane21',
+  instagram: 'https://www.instagram.com/walahi.special241/',
+  location:  'Palapye, BIUST',
+  about: [
+    'Tech Inc is a business under Happy Man Enterprise PTY LTD, with primary operations at Palapye BIUST. We sell certified refurbished tech sourced from the US — starting with phones, and growing into smartwatches, consoles and laptops.',
+    'Our vision goes beyond tech: we want to host other entrepreneurs\u2019 businesses on this platform and become a one-stop shop for the community.',
+  ],
 };
 
 // ─── Payment Info (update account numbers here) ───────────────────────────────
@@ -48,79 +56,61 @@ const PAYMENT_INFO = {
 } as const;
 
 // ─── Phone Images (per model) ─────────────────────────────────────────────────
-// Apple images use fmt=png-alpha for true transparent background.
-// Samsung/Pixel images are from GSMArena (white bg – shown in a framed container).
+// All images are local transparent PNGs in /public/phones (backgrounds removed).
 
-const appleBase = 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/';
-const appleQ    = '?wid=300&hei=600&fmt=png-alpha&qlt=80';
-const gsm       = 'https://fdn2.gsmarena.com/vv/bigpic/';
+const img = (file: string) => ({ url: `${import.meta.env.BASE_URL}phones/${file}.png`, transparent: true });
 
 const MODEL_IMAGES: Record<string, { url: string; transparent: boolean }> = {
-  // ─ iPhone 12 ─
-  'iPhone 12':          { url: `${appleBase}iphone-12-black-select-2020${appleQ}`,          transparent: true },
-  'iPhone 12 Pro':      { url: `${appleBase}iphone-12-pro-pacific-blue-select-2020${appleQ}`, transparent: true },
-  'iPhone 12 Pro Max':  { url: `${appleBase}iphone-12-pro-max-pacific-blue-select-2020${appleQ}`, transparent: true },
-  // ─ iPhone 13 ─
-  'iPhone 13':          { url: `${appleBase}iphone-13-midnight-select-2021${appleQ}`,        transparent: true },
-  'iPhone 13 Pro':      { url: `${appleBase}iphone-13-pro-graphite-select-2021${appleQ}`,    transparent: true },
-  'iPhone 13 Pro Max':  { url: `${appleBase}iphone-13-pro-max-graphite-select-2021${appleQ}`, transparent: true },
-  // ─ iPhone 14 ─
-  'iPhone 14':          { url: `${appleBase}iphone-14-black-select-202209${appleQ}`,         transparent: true },
-  'iPhone 14 Plus':     { url: `${appleBase}iphone-14-plus-black-select-202209${appleQ}`,    transparent: true },
-  'iPhone 14 Pro':      { url: `${appleBase}iphone-14-pro-black-select-202209${appleQ}`,     transparent: true },
-  'iPhone 14 Pro Max':  { url: `${appleBase}iphone-14-pro-max-black-select-202209${appleQ}`, transparent: true },
-  // ─ iPhone 15 ─
-  'iPhone 15':          { url: `${appleBase}iphone-15-black-select-202309${appleQ}`,         transparent: true },
-  'iPhone 15 Plus':     { url: `${appleBase}iphone-15-plus-black-select-202309${appleQ}`,    transparent: true },
-  'iPhone 15 Pro':      { url: `${appleBase}iphone-15-pro-black-select-202309${appleQ}`,     transparent: true },
-  'iPhone 15 Pro Max':  { url: `${appleBase}iphone-15-pro-max-black-select-202309${appleQ}`, transparent: true },
-  // ─ iPhone 16 ─
-  'iPhone 16':          { url: `${appleBase}iphone-16-black-select-202409${appleQ}`,         transparent: true },
-  'iPhone 16 Plus':     { url: `${appleBase}iphone-16-plus-black-select-202409${appleQ}`,    transparent: true },
-  'iPhone 16 Pro':      { url: `${appleBase}iphone-16-pro-black-select-202409${appleQ}`,     transparent: true },
-  'iPhone 16 Pro Max':  { url: `${appleBase}iphone-16-pro-max-black-select-202409${appleQ}`, transparent: true },
-  // ─ iPhone 17 ─
-  'iPhone 17':          { url: `${appleBase}iphone-17-black-select-202509${appleQ}`,         transparent: true },
-  'iPhone 17 Pro':      { url: `${appleBase}iphone-17-pro-black-select-202509${appleQ}`,     transparent: true },
-  'iPhone 17 Pro Max':  { url: `${appleBase}iphone-17-pro-max-black-select-202509${appleQ}`, transparent: true },
-  // ─ Samsung S22 ─
-  'Galaxy S22':         { url: `${gsm}samsung-galaxy-s22-5g.jpg`,       transparent: false },
-  'Galaxy S22+':        { url: `${gsm}samsung-galaxy-s22-plus-5g.jpg`,  transparent: false },
-  'Galaxy S22 Ultra':   { url: `${gsm}samsung-galaxy-s22-ultra-5g.jpg`, transparent: false },
-  // ─ Samsung S23 ─
-  'Galaxy S23':         { url: `${gsm}samsung-galaxy-s23-5g.jpg`,       transparent: false },
-  'Galaxy S23+':        { url: `${gsm}samsung-galaxy-s23-plus-5g.jpg`,  transparent: false },
-  'Galaxy S23 Ultra':   { url: `${gsm}samsung-galaxy-s23-ultra-5g.jpg`, transparent: false },
-  // ─ Samsung S24 ─
-  'Galaxy S24':         { url: `${gsm}samsung-galaxy-s24-5g.jpg`,       transparent: false },
-  'Galaxy S24+':        { url: `${gsm}samsung-galaxy-s24-plus-5g.jpg`,  transparent: false },
-  'Galaxy S24 Ultra':   { url: `${gsm}samsung-galaxy-s24-ultra-5g.jpg`, transparent: false },
-  // ─ Pixel 6 ─
-  'Pixel 6':            { url: `${gsm}google-pixel6.jpg`,               transparent: false },
-  'Pixel 6 Pro':        { url: `${gsm}google-pixel-6-pro.jpg`,          transparent: false },
-  'Pixel 6a':           { url: `${gsm}google-pixel-6a.jpg`,             transparent: false },
-  // ─ Pixel 7 ─
-  'Pixel 7':            { url: `${gsm}google-pixel-7.jpg`,              transparent: false },
-  'Pixel 7 Pro':        { url: `${gsm}google-pixel-7-pro.jpg`,          transparent: false },
-  'Pixel 7a':           { url: `${gsm}google-pixel-7a.jpg`,             transparent: false },
-  // ─ Pixel 8 ─
-  'Pixel 8':            { url: `${gsm}google-pixel-8.jpg`,              transparent: false },
-  'Pixel 8 Pro':        { url: `${gsm}google-pixel-8-pro.jpg`,          transparent: false },
-  'Pixel 8a':           { url: `${gsm}google-pixel-8a.jpg`,             transparent: false },
-  // ─ Pixel 9 ─
-  'Pixel 9':            { url: `${gsm}google-pixel-9.jpg`,              transparent: false },
-  'Pixel 9 Pro':        { url: `${gsm}google-pixel-9-pro.jpg`,          transparent: false },
-  'Pixel 9 Pro XL':     { url: `${gsm}google-pixel-9-pro-xl.jpg`,       transparent: false },
-  'Pixel 9a':           { url: `${gsm}google-pixel-9a.jpg`,             transparent: false },
-  // ─ Pixel 10 ─
-  'Pixel 10':           { url: `${gsm}google-pixel-10.jpg`,             transparent: false },
-  'Pixel 10 Pro':       { url: `${gsm}google-pixel-10-pro.jpg`,         transparent: false },
-  'Pixel 10 Pro XL':    { url: `${gsm}google-pixel-10-pro-xl.jpg`,      transparent: false },
-  'Pixel 10a':          { url: `${gsm}google-pixel-10a.jpg`,            transparent: false },
-  // ─ Pixel Fold ─
-  'Pixel Fold':         { url: `${gsm}google-pixel-fold.jpg`,           transparent: false },
-  'Pixel 9 Pro Fold':   { url: `${gsm}google-pixel-9-pro-fold.jpg`,     transparent: false },
-  'Pixel 10 Pro Fold':  { url: `${gsm}google-pixel-10-pro-fold.jpg`,    transparent: false },
+  'iPhone 12':          img('iphone-12'),
+  'iPhone 12 Pro':      img('iphone-12-pro'),
+  'iPhone 12 Pro Max':  img('iphone-12-pro-max'),
+  'iPhone 13':          img('iphone-13'),
+  'iPhone 13 Pro':      img('iphone-13-pro'),
+  'iPhone 13 Pro Max':  img('iphone-13-pro-max'),
+  'iPhone 14':          img('iphone-14'),
+  'iPhone 14 Plus':     img('iphone-14-plus'),
+  'iPhone 14 Pro':      img('iphone-14-pro'),
+  'iPhone 14 Pro Max':  img('iphone-14-pro-max'),
+  'iPhone 15':          img('iphone-15'),
+  'iPhone 15 Plus':     img('iphone-15-plus'),
+  'iPhone 15 Pro':      img('iphone-15-pro'),
+  'iPhone 15 Pro Max':  img('iphone-15-pro-max'),
+  'iPhone 16':          img('iphone-16'),
+  'iPhone 16 Plus':     img('iphone-16-plus'),
+  'iPhone 16 Pro':      img('iphone-16-pro'),
+  'iPhone 16 Pro Max':  img('iphone-16-pro-max'),
+  'iPhone 17':          img('iphone-17'),
+  'iPhone 17 Pro':      img('iphone-17-pro'),
+  'iPhone 17 Pro Max':  img('iphone-17-pro-max'),
+  'Galaxy S22':         img('galaxy-s22'),
+  'Galaxy S22+':        img('galaxy-s22-plus'),
+  'Galaxy S22 Ultra':   img('galaxy-s22-ultra'),
+  'Galaxy S23':         img('galaxy-s23'),
+  'Galaxy S23+':        img('galaxy-s23-plus'),
+  'Galaxy S23 Ultra':   img('galaxy-s23-ultra'),
+  'Galaxy S24':         img('galaxy-s24'),
+  'Galaxy S24+':        img('galaxy-s24-plus'),
+  'Galaxy S24 Ultra':   img('galaxy-s24-ultra'),
+  'Pixel 6':            img('pixel-6'),
+  'Pixel 6 Pro':        img('pixel-6-pro'),
+  'Pixel 6a':           img('pixel-6a'),
+  'Pixel 7':            img('pixel-7'),
+  'Pixel 7 Pro':        img('pixel-7-pro'),
+  'Pixel 7a':           img('pixel-7a'),
+  'Pixel 8':            img('pixel-8'),
+  'Pixel 8 Pro':        img('pixel-8-pro'),
+  'Pixel 8a':           img('pixel-8a'),
+  'Pixel 9':            img('pixel-9'),
+  'Pixel 9 Pro':        img('pixel-9-pro'),
+  'Pixel 9 Pro XL':     img('pixel-9-pro-xl'),
+  'Pixel 9a':           img('pixel-9a'),
+  'Pixel 10':           img('pixel-10'),
+  'Pixel 10 Pro':       img('pixel-10-pro'),
+  'Pixel 10 Pro XL':    img('pixel-10-pro-xl'),
+  'Pixel 10a':          img('pixel-10a'),
+  'Pixel Fold':         img('pixel-fold'),
+  'Pixel 9 Pro Fold':   img('pixel-9-pro-fold'),
+  'Pixel 10 Pro Fold':  img('pixel-10-pro-fold'),
 };
 
 // ─── Catalog ─────────────────────────────────────────────────────────────────
@@ -249,7 +239,7 @@ const BRAND_ICONS: Record<string, React.ElementType> = {
   'Google Pixel': SiGoogle,
 };
 
-const slideVariants = {
+const slideVariants: import('framer-motion').Variants = {
   enter:  (dir: number) => ({ x: dir > 0 ? '10%' : '-10%', opacity: 0, scale: 0.95, filter: 'blur(8px)' }),
   center: { x: 0, opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
   exit:   (dir: number) => ({ x: dir < 0 ? '10%' : '-10%', opacity: 0, scale: 0.95, filter: 'blur(8px)', transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } }),
@@ -303,7 +293,7 @@ function TrustBadges() {
         { Icon: Unlock,    label: 'Unlocked Device' },
         { Icon: Shield,    label: '90-Day Warranty' },
         { Icon: Truck,     label: '14 Working Days ETA' },
-        { Icon: Camera,    label: 'Photos + Battery % Sent Before Shipping' },
+        { Icon: Camera,    label: 'Photos of Your Phone + Battery % Within 48hrs of Ordering' },
         { Icon: RotateCcw, label: 'Refund Before Shipping (10% Admin Fee)' },
       ].map(({ Icon, label }) => (
         <div key={label} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-background/40 border border-border/30">
@@ -317,10 +307,10 @@ function TrustBadges() {
 
 function AboutModal({ onClose }: { onClose: () => void }) {
   const socials = [
-    { Icon: SiFacebook,  label: 'Facebook',  handle: BUSINESS.facebook,  href: `https://facebook.com/${BUSINESS.facebook.replace('@','')}` },
-    { Icon: SiInstagram, label: 'Instagram', handle: BUSINESS.instagram, href: `https://instagram.com/${BUSINESS.instagram.replace('@','')}` },
-    { Icon: SiTiktok,    label: 'TikTok',    handle: BUSINESS.tiktok,    href: `https://tiktok.com/${BUSINESS.tiktok}` },
-    { Icon: SiWhatsapp,  label: 'WhatsApp',  handle: BUSINESS.whatsapp,  href: `https://wa.me/${BUSINESS.whatsapp.replace(/\D/g,'')}` },
+    { Icon: SiWhatsapp,  label: 'WhatsApp',  handle: BUSINESS.whatsapp,           href: `https://wa.me/${BUSINESS.whatsapp.replace(/\D/g,'')}` },
+    { Icon: Linkedin,    label: 'LinkedIn',  handle: 'special-lekopane21',        href: BUSINESS.linkedin },
+    { Icon: SiInstagram, label: 'Instagram', handle: '@walahi.special241',        href: BUSINESS.instagram },
+    { Icon: SiTiktok,    label: 'TikTok',    handle: BUSINESS.tiktok,             href: `https://tiktok.com/${BUSINESS.tiktok}` },
   ];
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -328,21 +318,26 @@ function AboutModal({ onClose }: { onClose: () => void }) {
       <motion.div initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
         transition={{ type: 'spring', stiffness: 300, damping: 35 }}
         onClick={e => e.stopPropagation()}
-        className="w-full max-w-lg bg-card border border-border/40 rounded-t-[2rem] p-8 pb-10 shadow-2xl">
+        className="w-full max-w-lg bg-card border border-border/40 rounded-t-[2rem] p-8 pb-10 shadow-2xl overflow-y-auto max-h-[90dvh]">
         <div className="w-12 h-1 bg-border rounded-full mx-auto mb-6" />
         <div className="flex items-center gap-4 mb-3">
           <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
           <div>
             <h3 className="text-lg font-semibold text-primary">{BUSINESS.name}</h3>
-            <p className="text-xs text-muted-foreground">a subsidiary of Happy Man Enterprise PTY LTD</p>
+            <p className="text-xs text-muted-foreground">a business under Happy Man Enterprise PTY LTD</p>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-5">{BUSINESS.tagline}</p>
+        {BUSINESS.about.map((p, i) => (
+          <p key={i} className="text-sm text-muted-foreground leading-relaxed mb-3">{p}</p>
+        ))}
         <div className="text-xs text-muted-foreground mb-4 space-y-1">
+          <p>👤 Owner: {BUSINESS.owner}</p>
+          <p>📍 {BUSINESS.location}</p>
           <p>📧 {BUSINESS.email}</p>
-          <p>📱 {BUSINESS.whatsapp}</p>
+          <p>📱 {BUSINESS.whatsapp} — enquiries welcome on WhatsApp</p>
           <p className="text-[10px] mt-2 text-amber-400/80">Refund Policy: Cancellations before shipping are subject to a 10% admin fee.</p>
         </div>
+        <p className="text-xs italic text-primary/80 mb-4">“{BUSINESS.slogan}”</p>
         <div className="grid grid-cols-1 gap-2">
           {socials.map(({ Icon, label, handle, href }) => (
             <a key={label} href={href} target="_blank" rel="noopener noreferrer"
@@ -362,7 +357,7 @@ function AboutModal({ onClose }: { onClose: () => void }) {
 // ─── Main TechStore Component ─────────────────────────────────────────────────
 // Steps: 0 = Brand, 1 = Series, 2 = Model + Storage + Color (inline), 3 = Checkout, 4 = Confirmation
 
-export default function TechStore({ onBack }: { onBack: () => void }) {
+export default function TechStore() {
   const [step,      setStep]      = useState(0);
   const [direction, setDirection] = useState(1);
   const [showAbout, setShowAbout] = useState(false);
@@ -697,6 +692,13 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
 
         <div className="flex-shrink-0"><TrustBadges /></div>
 
+        <div className="flex items-start gap-2 px-4 py-3 rounded-2xl bg-blue-500/5 border border-blue-500/20 flex-shrink-0">
+          <Camera className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Within <span className="text-foreground font-medium">48 hours of ordering</span>, we'll send you photos of your actual phone and its battery percentage — before it ships.
+          </p>
+        </div>
+
         {/* Payment */}
         <div className="bg-card/40 backdrop-blur-md border border-border/40 rounded-[2rem] p-5 flex-shrink-0">
           <p className="text-sm text-muted-foreground uppercase tracking-widest mb-3">Choose Payment</p>
@@ -736,7 +738,7 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="w-full text-center">
           <h2 className="text-3xl md:text-4xl font-semibold mb-3 tracking-tight text-primary">Order Confirmed!</h2>
           <p className="text-muted-foreground text-sm mb-4 max-w-sm mx-auto leading-relaxed">
-            Your <span className="text-foreground font-medium">{model?.name}</span> is being processed. We'll send you photos and battery percentage before shipping.
+            Your <span className="text-foreground font-medium">{model?.name}</span> is being processed. Within <span className="text-foreground font-medium">48 hours</span> we'll send you photos of your actual phone and its battery percentage — before it ships.
           </p>
           <div className="bg-card/50 border border-border/30 rounded-2xl p-4 mb-4 text-left space-y-1.5">
             <div className="flex justify-between text-sm"><span className="text-muted-foreground">Order Number</span><span className="font-mono text-primary font-semibold">{orderNumber}</span></div>
@@ -777,9 +779,6 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
       {/* Header */}
       <header className="h-16 flex-shrink-0 flex items-center justify-between px-5 md:px-10 z-20 border-b border-border/10 relative">
         <div className="flex items-center gap-3">
-          <button onClick={onBack} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/40 transition-all mr-1">
-            <ArrowLeft className="w-4 h-4" />
-          </button>
           <img src="/logo.png" alt="Tech Inc" className="h-8 w-8 object-contain" />
           <div>
             <span className="text-xs font-semibold text-primary tracking-wider">TECH INC</span>
@@ -830,28 +829,41 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
       </main>
 
       {/* Footer */}
-      <footer className="h-16 flex-shrink-0 flex items-center justify-between px-6 md:px-12 z-20 border-t border-border/10 bg-background/50 backdrop-blur-xl relative">
-        <div className="w-20">
-          {step > 0 && step < 4 && (
-            <button onClick={() => retreat(step - 1)}
-              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group">
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
-            </button>
-          )}
-        </div>
-        <div className="text-center">
-          <AnimatePresence mode="wait">
-            {storage && step < 4 && (
-              <motion.div key={storage.price} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex flex-col items-center">
-                <span className="text-[10px] text-muted-foreground uppercase tracking-widest mb-0.5">Total</span>
-                <span className="text-xl md:text-2xl tracking-tight">{formatPrice(storage.price)}</span>
-              </motion.div>
+      <footer className="flex-shrink-0 z-20 border-t border-border/10 bg-background/50 backdrop-blur-xl relative">
+        <div className="h-14 flex items-center justify-between px-6 md:px-12">
+          <div className="w-24">
+            {step > 0 && step < 4 && (
+              <button onClick={() => retreat(step - 1)}
+                className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group">
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
+              </button>
             )}
-          </AnimatePresence>
+          </div>
+          <div className="text-center">
+            <AnimatePresence mode="wait">
+              {storage && step < 4 ? (
+                <motion.div key={storage.price} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex flex-col items-center">
+                  <span className="text-[10px] text-muted-foreground uppercase tracking-widest mb-0.5">Total</span>
+                  <span className="text-lg md:text-xl tracking-tight">{formatPrice(storage.price)}</span>
+                </motion.div>
+              ) : (
+                <motion.p key="slogan" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  className="hidden sm:block text-[11px] italic text-muted-foreground/70 max-w-md">
+                  “{BUSINESS.slogan}”
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
+          <div className="w-24 flex items-center justify-end gap-3">
+            <a href={`https://wa.me/${BUSINESS.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent('Hi Tech Inc! I have an enquiry.')}`}
+              target="_blank" rel="noopener noreferrer" title={`WhatsApp ${BUSINESS.whatsapp} for enquiries`}
+              className="flex items-center gap-1.5 text-xs text-green-400/80 hover:text-green-300 transition-colors">
+              <SiWhatsapp className="w-3.5 h-3.5" /> <span className="hidden md:inline">74066703</span>
+            </a>
+            <button onClick={() => setShowAbout(true)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">About Us</button>
+          </div>
         </div>
-        <div className="w-20 flex justify-end">
-          <button onClick={() => setShowAbout(true)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">About Us</button>
-        </div>
+        <p className="sm:hidden text-center text-[10px] italic text-muted-foreground/60 pb-1.5 px-4">“{BUSINESS.slogan}”</p>
       </footer>
     </div>
   );
