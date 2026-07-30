@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, CheckCircle2, Upload, X, Copy, Check, ExternalLink, Info,
-  Shield, Battery, Unlock, Truck, Camera, RotateCcw
+  Shield, Battery, Unlock, Truck, Camera, RotateCcw, ChevronDown
 } from 'lucide-react';
 import { SiApple, SiSamsung, SiGoogle, SiFacebook, SiInstagram, SiTiktok, SiWhatsapp } from 'react-icons/si';
 
@@ -16,7 +16,6 @@ type BrandData     = { series: Record<string, PhoneModel[]> };
 
 const BUSINESS = {
   name:     'Tech Inc',
-  sub:      'a subsidiary of Happy Man Enterprise PTY LTD',
   tagline:  'Certified refurbished phones with guaranteed battery health, delivered across Botswana.',
   whatsapp: '+267 74066703',
   email:    'happymanenterprise@outlook.com',
@@ -28,10 +27,6 @@ const BUSINESS = {
 // ─── Payment Info (update account numbers here) ───────────────────────────────
 
 const PAYMENT_INFO = {
-  paypal: {
-    email: 'happymanenterprise@outlook.com',
-    link:  `https://www.paypal.com/send?recipient=happymanenterprise%40outlook.com`,
-  },
   fnb: {
     bankName:      'FNB (First National Bank)',
     accountName:   'Happy Man Enterprise PTY LTD',
@@ -52,24 +47,80 @@ const PAYMENT_INFO = {
   },
 } as const;
 
-// ─── Phone Images ─────────────────────────────────────────────────────────────
+// ─── Phone Images (per model) ─────────────────────────────────────────────────
+// Apple images use fmt=png-alpha for true transparent background.
+// Samsung/Pixel images are from GSMArena (white bg – shown in a framed container).
 
-const SERIES_IMAGES: Record<string, string> = {
-  'iPhone 12': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-12-black-select-2020?wid=300&hei=600&fmt=jpeg&qlt=90',
-  'iPhone 13': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-midnight-select-2021?wid=300&hei=600&fmt=jpeg&qlt=90',
-  'iPhone 14': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-black-select-202209?wid=300&hei=600&fmt=jpeg&qlt=90',
-  'iPhone 15': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-black-select-202309?wid=300&hei=600&fmt=jpeg&qlt=90',
-  'iPhone 16': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-black-select-202409?wid=300&hei=600&fmt=jpeg&qlt=90',
-  'iPhone 17': 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-black-select-202509?wid=300&hei=600&fmt=jpeg&qlt=90',
-  'Galaxy S22': 'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s22-5g.jpg',
-  'Galaxy S23': 'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s23-5g.jpg',
-  'Galaxy S24': 'https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s24-5g.jpg',
-  'Pixel 6':    'https://fdn2.gsmarena.com/vv/bigpic/google-pixel6.jpg',
-  'Pixel 7':    'https://fdn2.gsmarena.com/vv/bigpic/google-pixel-7.jpg',
-  'Pixel 8':    'https://fdn2.gsmarena.com/vv/bigpic/google-pixel-8.jpg',
-  'Pixel 9':    'https://fdn2.gsmarena.com/vv/bigpic/google-pixel-9.jpg',
-  'Pixel 10':   'https://fdn2.gsmarena.com/vv/bigpic/google-pixel-10.jpg',
-  'Pixel Fold': 'https://fdn2.gsmarena.com/vv/bigpic/google-pixel-fold.jpg',
+const appleBase = 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/';
+const appleQ    = '?wid=300&hei=600&fmt=png-alpha&qlt=80';
+const gsm       = 'https://fdn2.gsmarena.com/vv/bigpic/';
+
+const MODEL_IMAGES: Record<string, { url: string; transparent: boolean }> = {
+  // ─ iPhone 12 ─
+  'iPhone 12':          { url: `${appleBase}iphone-12-black-select-2020${appleQ}`,          transparent: true },
+  'iPhone 12 Pro':      { url: `${appleBase}iphone-12-pro-pacific-blue-select-2020${appleQ}`, transparent: true },
+  'iPhone 12 Pro Max':  { url: `${appleBase}iphone-12-pro-max-pacific-blue-select-2020${appleQ}`, transparent: true },
+  // ─ iPhone 13 ─
+  'iPhone 13':          { url: `${appleBase}iphone-13-midnight-select-2021${appleQ}`,        transparent: true },
+  'iPhone 13 Pro':      { url: `${appleBase}iphone-13-pro-graphite-select-2021${appleQ}`,    transparent: true },
+  'iPhone 13 Pro Max':  { url: `${appleBase}iphone-13-pro-max-graphite-select-2021${appleQ}`, transparent: true },
+  // ─ iPhone 14 ─
+  'iPhone 14':          { url: `${appleBase}iphone-14-black-select-202209${appleQ}`,         transparent: true },
+  'iPhone 14 Plus':     { url: `${appleBase}iphone-14-plus-black-select-202209${appleQ}`,    transparent: true },
+  'iPhone 14 Pro':      { url: `${appleBase}iphone-14-pro-black-select-202209${appleQ}`,     transparent: true },
+  'iPhone 14 Pro Max':  { url: `${appleBase}iphone-14-pro-max-black-select-202209${appleQ}`, transparent: true },
+  // ─ iPhone 15 ─
+  'iPhone 15':          { url: `${appleBase}iphone-15-black-select-202309${appleQ}`,         transparent: true },
+  'iPhone 15 Plus':     { url: `${appleBase}iphone-15-plus-black-select-202309${appleQ}`,    transparent: true },
+  'iPhone 15 Pro':      { url: `${appleBase}iphone-15-pro-black-select-202309${appleQ}`,     transparent: true },
+  'iPhone 15 Pro Max':  { url: `${appleBase}iphone-15-pro-max-black-select-202309${appleQ}`, transparent: true },
+  // ─ iPhone 16 ─
+  'iPhone 16':          { url: `${appleBase}iphone-16-black-select-202409${appleQ}`,         transparent: true },
+  'iPhone 16 Plus':     { url: `${appleBase}iphone-16-plus-black-select-202409${appleQ}`,    transparent: true },
+  'iPhone 16 Pro':      { url: `${appleBase}iphone-16-pro-black-select-202409${appleQ}`,     transparent: true },
+  'iPhone 16 Pro Max':  { url: `${appleBase}iphone-16-pro-max-black-select-202409${appleQ}`, transparent: true },
+  // ─ iPhone 17 ─
+  'iPhone 17':          { url: `${appleBase}iphone-17-black-select-202509${appleQ}`,         transparent: true },
+  'iPhone 17 Pro':      { url: `${appleBase}iphone-17-pro-black-select-202509${appleQ}`,     transparent: true },
+  'iPhone 17 Pro Max':  { url: `${appleBase}iphone-17-pro-max-black-select-202509${appleQ}`, transparent: true },
+  // ─ Samsung S22 ─
+  'Galaxy S22':         { url: `${gsm}samsung-galaxy-s22-5g.jpg`,       transparent: false },
+  'Galaxy S22+':        { url: `${gsm}samsung-galaxy-s22-plus-5g.jpg`,  transparent: false },
+  'Galaxy S22 Ultra':   { url: `${gsm}samsung-galaxy-s22-ultra-5g.jpg`, transparent: false },
+  // ─ Samsung S23 ─
+  'Galaxy S23':         { url: `${gsm}samsung-galaxy-s23-5g.jpg`,       transparent: false },
+  'Galaxy S23+':        { url: `${gsm}samsung-galaxy-s23-plus-5g.jpg`,  transparent: false },
+  'Galaxy S23 Ultra':   { url: `${gsm}samsung-galaxy-s23-ultra-5g.jpg`, transparent: false },
+  // ─ Samsung S24 ─
+  'Galaxy S24':         { url: `${gsm}samsung-galaxy-s24-5g.jpg`,       transparent: false },
+  'Galaxy S24+':        { url: `${gsm}samsung-galaxy-s24-plus-5g.jpg`,  transparent: false },
+  'Galaxy S24 Ultra':   { url: `${gsm}samsung-galaxy-s24-ultra-5g.jpg`, transparent: false },
+  // ─ Pixel 6 ─
+  'Pixel 6':            { url: `${gsm}google-pixel6.jpg`,               transparent: false },
+  'Pixel 6 Pro':        { url: `${gsm}google-pixel-6-pro.jpg`,          transparent: false },
+  'Pixel 6a':           { url: `${gsm}google-pixel-6a.jpg`,             transparent: false },
+  // ─ Pixel 7 ─
+  'Pixel 7':            { url: `${gsm}google-pixel-7.jpg`,              transparent: false },
+  'Pixel 7 Pro':        { url: `${gsm}google-pixel-7-pro.jpg`,          transparent: false },
+  'Pixel 7a':           { url: `${gsm}google-pixel-7a.jpg`,             transparent: false },
+  // ─ Pixel 8 ─
+  'Pixel 8':            { url: `${gsm}google-pixel-8.jpg`,              transparent: false },
+  'Pixel 8 Pro':        { url: `${gsm}google-pixel-8-pro.jpg`,          transparent: false },
+  'Pixel 8a':           { url: `${gsm}google-pixel-8a.jpg`,             transparent: false },
+  // ─ Pixel 9 ─
+  'Pixel 9':            { url: `${gsm}google-pixel-9.jpg`,              transparent: false },
+  'Pixel 9 Pro':        { url: `${gsm}google-pixel-9-pro.jpg`,          transparent: false },
+  'Pixel 9 Pro XL':     { url: `${gsm}google-pixel-9-pro-xl.jpg`,       transparent: false },
+  'Pixel 9a':           { url: `${gsm}google-pixel-9a.jpg`,             transparent: false },
+  // ─ Pixel 10 ─
+  'Pixel 10':           { url: `${gsm}google-pixel-10.jpg`,             transparent: false },
+  'Pixel 10 Pro':       { url: `${gsm}google-pixel-10-pro.jpg`,         transparent: false },
+  'Pixel 10 Pro XL':    { url: `${gsm}google-pixel-10-pro-xl.jpg`,      transparent: false },
+  'Pixel 10a':          { url: `${gsm}google-pixel-10a.jpg`,            transparent: false },
+  // ─ Pixel Fold ─
+  'Pixel Fold':         { url: `${gsm}google-pixel-fold.jpg`,           transparent: false },
+  'Pixel 9 Pro Fold':   { url: `${gsm}google-pixel-9-pro-fold.jpg`,     transparent: false },
+  'Pixel 10 Pro Fold':  { url: `${gsm}google-pixel-10-pro-fold.jpg`,    transparent: false },
 };
 
 // ─── Catalog ─────────────────────────────────────────────────────────────────
@@ -199,9 +250,9 @@ const BRAND_ICONS: Record<string, React.ElementType> = {
 };
 
 const slideVariants = {
-  enter: (dir: number) => ({ x: dir > 0 ? '10%' : '-10%', opacity: 0, scale: 0.95, filter: 'blur(8px)' }),
+  enter:  (dir: number) => ({ x: dir > 0 ? '10%' : '-10%', opacity: 0, scale: 0.95, filter: 'blur(8px)' }),
   center: { x: 0, opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
-  exit: (dir: number) => ({ x: dir < 0 ? '10%' : '-10%', opacity: 0, scale: 0.95, filter: 'blur(8px)', transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } }),
+  exit:   (dir: number) => ({ x: dir < 0 ? '10%' : '-10%', opacity: 0, scale: 0.95, filter: 'blur(8px)', transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } }),
 };
 
 function formatPrice(p: number) { return 'P' + p.toLocaleString('en-ZA'); }
@@ -223,22 +274,36 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-function PhoneImage({ seriesKey, className }: { seriesKey: string; className?: string }) {
+function PhoneImage({ modelName, className }: { modelName: string; className?: string }) {
   const [failed, setFailed] = useState(false);
-  const src = SERIES_IMAGES[seriesKey];
-  if (!src || failed) return null;
-  return <img src={src} alt={seriesKey} className={className} onError={() => setFailed(true)} draggable={false} />;
+  const entry = MODEL_IMAGES[modelName];
+  if (!entry || failed) return null;
+  if (entry.transparent) {
+    // True transparent PNG — render directly on dark background
+    return (
+      <img src={entry.url} alt={modelName} className={className}
+        onError={() => setFailed(true)} draggable={false} />
+    );
+  }
+  // White-bg image — frame it in a subtle light-tinted container so it looks intentional
+  return (
+    <div className={`${className} rounded-xl overflow-hidden flex items-center justify-center`}
+      style={{ background: 'rgba(255,255,255,0.06)' }}>
+      <img src={entry.url} alt={modelName} className="w-full h-full object-contain"
+        onError={() => setFailed(true)} draggable={false} />
+    </div>
+  );
 }
 
 function TrustBadges() {
   return (
     <div className="grid grid-cols-2 gap-2">
       {[
-        { Icon: Battery, label: 'Battery >80% Guaranteed' },
-        { Icon: Unlock,  label: 'Unlocked Device' },
-        { Icon: Shield,  label: '90-Day Warranty' },
-        { Icon: Truck,   label: '14 Working Days ETA' },
-        { Icon: Camera,  label: 'Photos + Battery % Sent Before Shipping' },
+        { Icon: Battery,   label: 'Battery >80% Guaranteed' },
+        { Icon: Unlock,    label: 'Unlocked Device' },
+        { Icon: Shield,    label: '90-Day Warranty' },
+        { Icon: Truck,     label: '14 Working Days ETA' },
+        { Icon: Camera,    label: 'Photos + Battery % Sent Before Shipping' },
         { Icon: RotateCcw, label: 'Refund Before Shipping (10% Admin Fee)' },
       ].map(({ Icon, label }) => (
         <div key={label} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-background/40 border border-border/30">
@@ -269,7 +334,7 @@ function AboutModal({ onClose }: { onClose: () => void }) {
           <img src="/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
           <div>
             <h3 className="text-lg font-semibold text-primary">{BUSINESS.name}</h3>
-            <p className="text-xs text-muted-foreground">{BUSINESS.sub}</p>
+            <p className="text-xs text-muted-foreground">a subsidiary of Happy Man Enterprise PTY LTD</p>
           </div>
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed mb-5">{BUSINESS.tagline}</p>
@@ -295,6 +360,7 @@ function AboutModal({ onClose }: { onClose: () => void }) {
 }
 
 // ─── Main TechStore Component ─────────────────────────────────────────────────
+// Steps: 0 = Brand, 1 = Series, 2 = Model + Storage + Color (inline), 3 = Checkout, 4 = Confirmation
 
 export default function TechStore({ onBack }: { onBack: () => void }) {
   const [step,      setStep]      = useState(0);
@@ -307,7 +373,10 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
   const [storage, setStorage] = useState<StorageOption | null>(null);
   const [color,   setColor]   = useState<string | null>(null);
 
-  type PayMethod = 'paypal' | 'fnb' | 'orange' | 'absa';
+  // Inline selection state on the model step
+  const [selectedModelName, setSelectedModelName] = useState<string | null>(null);
+
+  type PayMethod = 'fnb' | 'orange' | 'absa';
   const [payMethod, setPayMethod] = useState<PayMethod | null>(null);
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [{ orderNumber, paymentRef }] = useState(() => generateOrder());
@@ -316,37 +385,30 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
   const advance = (s: number) => { setDirection(1); setStep(s); };
   const retreat = (s: number) => {
     setDirection(-1); setStep(s);
-    if (s <= 0) { setSeries(null); setModel(null); setStorage(null); setColor(null); }
-    else if (s <= 1) { setModel(null); setStorage(null); setColor(null); }
+    if (s <= 0) { setSeries(null); setModel(null); setStorage(null); setColor(null); setSelectedModelName(null); }
+    else if (s <= 1) { setModel(null); setStorage(null); setColor(null); setSelectedModelName(null); }
     else if (s <= 2) { setStorage(null); setColor(null); }
-    else if (s <= 3) { setColor(null); }
-    if (s < 5) { setPayMethod(null); setProofFile(null); }
+    if (s < 3) { setPayMethod(null); setProofFile(null); }
   };
 
   const reset = () => {
     setDirection(-1);
     setBrand(null); setSeries(null); setModel(null); setStorage(null); setColor(null);
-    setPayMethod(null); setProofFile(null); setStep(0);
+    setSelectedModelName(null); setPayMethod(null); setProofFile(null); setStep(0);
   };
 
   const crumbs: { label: string; step: number }[] = [];
-  if (brand)   crumbs.push({ label: brand,       step: 0 });
-  if (series)  crumbs.push({ label: series,       step: 1 });
-  if (model)   crumbs.push({ label: model.name,   step: 2 });
-  if (storage) crumbs.push({ label: storage.size, step: 3 });
+  if (brand)  crumbs.push({ label: brand,  step: 0 });
+  if (series) crumbs.push({ label: series, step: 1 });
+  if (model && storage && color) crumbs.push({ label: `${model.name} · ${storage.size}`, step: 2 });
 
   const paymentMethods: { id: PayMethod; label: string; icon: string }[] = [
-    { id: 'paypal', label: 'PayPal',            icon: '💳' },
-    { id: 'fnb',    label: 'FNB Bank Transfer', icon: '🏦' },
-    { id: 'orange', label: 'Orange Money',       icon: '🟠' },
-    { id: 'absa',   label: 'ABSA Bank Transfer',icon: '🏦' },
+    { id: 'fnb',    label: 'FNB Bank Transfer',  icon: '🏦' },
+    { id: 'orange', label: 'Orange Money',        icon: '🟠' },
+    { id: 'absa',   label: 'ABSA Bank Transfer',  icon: '🏦' },
   ];
 
-  const canConfirm = () => {
-    if (!payMethod) return false;
-    if (payMethod === 'paypal') return true;
-    return proofFile !== null;
-  };
+  const canConfirm = () => payMethod !== null && proofFile !== null;
 
   const renderUpload = () => (
     <div className="pt-2">
@@ -369,22 +431,6 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
 
   const renderPaymentDetails = () => {
     if (!payMethod || !storage) return null;
-    if (payMethod === 'paypal') return (
-      <motion.div key="paypal" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-        className="mt-3 p-4 bg-background/60 border border-border/40 rounded-2xl text-sm space-y-2">
-        <p className="text-muted-foreground">Send <span className="text-foreground font-medium">{formatPrice(storage.price)}</span> to:</p>
-        <div className="flex items-center gap-1"><span className="font-mono">{PAYMENT_INFO.paypal.email}</span><CopyButton text={PAYMENT_INFO.paypal.email} /></div>
-        <div className="flex items-center gap-2 py-1.5 px-3 bg-primary/5 border border-primary/15 rounded-xl">
-          <span className="text-xs text-muted-foreground">Reference</span>
-          <span className="font-mono font-semibold text-primary">{paymentRef}</span>
-          <CopyButton text={paymentRef} />
-        </div>
-        <a href={`${PAYMENT_INFO.paypal.link}&amount=${storage.price}&currency_code=BWP`} target="_blank" rel="noopener noreferrer"
-          className="flex items-center gap-1.5 text-primary hover:underline font-medium">
-          Open PayPal <ExternalLink className="w-3.5 h-3.5" />
-        </a>
-      </motion.div>
-    );
     if (payMethod === 'orange') return (
       <motion.div key="orange" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
         className="mt-3 p-4 bg-background/60 border border-border/40 rounded-2xl text-sm space-y-1.5">
@@ -396,7 +442,7 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
           <span className="font-mono font-semibold text-primary">{paymentRef}</span>
           <CopyButton text={paymentRef} />
         </div>
-        <p className="text-xs text-amber-400/80">Please use this reference when making your payment.</p>
+        <p className="text-xs text-amber-400/80">Use this reference when making your payment.</p>
         {renderUpload()}
       </motion.div>
     );
@@ -414,7 +460,7 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
           <span className="font-mono font-semibold text-primary text-base">{paymentRef}</span>
           <CopyButton text={paymentRef} />
         </div>
-        <p className="text-xs text-amber-400/80">Please use this reference when making your bank transfer.</p>
+        <p className="text-xs text-amber-400/80">Use this reference when making your bank transfer.</p>
         {renderUpload()}
       </motion.div>
     );
@@ -430,7 +476,7 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
           const Icon = BRAND_ICONS[b];
           return (
             <button key={b}
-              onClick={() => { setBrand(b); setSeries(null); setModel(null); setStorage(null); setColor(null); advance(1); }}
+              onClick={() => { setBrand(b); setSeries(null); setModel(null); setStorage(null); setColor(null); setSelectedModelName(null); advance(1); }}
               className="group flex flex-col items-center justify-center py-12 px-4 bg-card/40 backdrop-blur-md border border-border/50 rounded-[2rem] hover:bg-secondary/40 hover:border-primary/50 transition-all duration-500">
               <Icon className="w-16 h-16 md:w-20 md:h-20 mb-6 text-foreground/50 group-hover:text-primary group-hover:scale-110 transition-all duration-500" />
               <span className="text-xl md:text-2xl font-medium tracking-wide">{b}</span>
@@ -447,86 +493,168 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
       <div className="w-full max-w-4xl px-4">
         <h2 className="text-3xl md:text-5xl font-semibold mb-10 text-center tracking-tight text-primary">Which series?</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          {Object.keys(CATALOG[brand].series).map(s => (
-            <button key={s}
-              onClick={() => { setSeries(s); setModel(null); setStorage(null); setColor(null); advance(2); }}
-              className="group relative flex flex-col justify-between p-5 md:p-6 h-28 md:h-40 bg-card/40 backdrop-blur-md border border-border/50 rounded-[1.5rem] hover:bg-secondary/40 hover:border-primary/50 transition-all duration-500 text-left overflow-hidden">
-              <div className="absolute right-0 bottom-0 w-20 h-full opacity-[0.12] pointer-events-none">
-                <PhoneImage seriesKey={s} className="absolute bottom-0 right-2 h-full object-contain object-bottom" />
-              </div>
-              <span className="relative text-lg md:text-xl font-semibold tracking-tight text-foreground/90 group-hover:text-primary transition-colors">{s}</span>
-              <span className="relative text-xs text-muted-foreground">{CATALOG[brand].series[s].length} models</span>
-            </button>
-          ))}
+          {Object.keys(CATALOG[brand].series).map(s => {
+            // show a representative model image for the series
+            const firstModel = CATALOG[brand].series[s][0];
+            const img = MODEL_IMAGES[firstModel.name];
+            return (
+              <button key={s}
+                onClick={() => { setSeries(s); setModel(null); setStorage(null); setColor(null); setSelectedModelName(null); advance(2); }}
+                className="group relative flex flex-col justify-between p-5 md:p-6 h-28 md:h-40 bg-card/40 backdrop-blur-md border border-border/50 rounded-[1.5rem] hover:bg-secondary/40 hover:border-primary/50 transition-all duration-500 text-left overflow-hidden">
+                {img && (
+                  <div className="absolute right-0 bottom-0 w-20 h-full pointer-events-none">
+                    {img.transparent
+                      ? <img src={img.url} alt={s} className="absolute bottom-0 right-1 h-full object-contain opacity-15" onError={() => {}} />
+                      : <div className="absolute bottom-0 right-1 h-full w-20 opacity-10 overflow-hidden rounded-xl">
+                          <img src={img.url} alt={s} className="h-full w-full object-contain" onError={() => {}} />
+                        </div>
+                    }
+                  </div>
+                )}
+                <span className="relative text-lg md:text-xl font-semibold tracking-tight text-foreground/90 group-hover:text-primary transition-colors">{s}</span>
+                <span className="relative text-xs text-muted-foreground">{CATALOG[brand].series[s].length} models</span>
+              </button>
+            );
+          })}
         </div>
       </div>
     );
   };
 
-  const renderModel = () => {
+  // Step 2: Model grid with inline storage + color dropdowns
+  const renderModelStep = () => {
     if (!brand || !series) return null;
     const models = CATALOG[brand].series[series];
-    return (
-      <div className="w-full max-w-4xl px-4">
-        <h2 className="text-3xl md:text-5xl font-semibold mb-10 text-center tracking-tight text-primary">Which model?</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          {models.map(m => (
-            <button key={m.name}
-              onClick={() => { setModel(m); setStorage(null); setColor(null); advance(3); }}
-              className="group relative flex flex-col justify-between p-5 md:p-6 h-32 md:h-48 bg-card/40 backdrop-blur-md border border-border/50 rounded-[1.5rem] hover:bg-secondary/40 hover:border-primary/50 transition-all duration-500 text-left overflow-hidden">
-              <div className="absolute right-0 bottom-0 w-24 md:w-32 h-full opacity-20 group-hover:opacity-30 pointer-events-none transition-opacity">
-                <PhoneImage seriesKey={series} className="absolute bottom-0 right-1 h-full object-contain object-bottom" />
-              </div>
-              <span className="relative text-base md:text-xl font-semibold tracking-tight text-foreground/90 group-hover:text-primary transition-colors leading-snug">{m.name}</span>
-              <span className="relative text-sm text-muted-foreground">From {formatPrice(m.storages[0].price)}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  };
+    const selModel = models.find(m => m.name === selectedModelName) ?? null;
 
-  const renderStorage = () => {
-    if (!model) return null;
     return (
-      <div className="w-full max-w-4xl px-4">
-        <h2 className="text-3xl md:text-5xl font-semibold mb-10 text-center tracking-tight text-primary">How much storage?</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {model.storages.map(opt => (
-            <button key={opt.size}
-              onClick={() => { setStorage(opt); setColor(null); advance(4); }}
-              className="group relative flex flex-col justify-between p-6 md:p-10 h-32 md:h-48 bg-card/40 backdrop-blur-md border border-border/50 rounded-[2rem] hover:bg-secondary/40 hover:border-primary/50 transition-all duration-500 text-left overflow-hidden">
-              <div className="absolute right-0 bottom-0 w-28 h-full opacity-10 group-hover:opacity-20 pointer-events-none transition-opacity">
-                <PhoneImage seriesKey={series!} className="absolute bottom-0 right-2 h-full object-contain object-bottom" />
-              </div>
-              <span className="relative text-2xl md:text-4xl font-semibold text-foreground/90 group-hover:text-primary transition-colors">{opt.size}</span>
-              <span className="relative text-lg text-muted-foreground font-medium">{formatPrice(opt.price)}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  };
+      <div className="w-full max-w-4xl px-4 flex flex-col gap-6" style={{ maxHeight: 'calc(100dvh - 200px)', overflowY: 'auto' }}>
+        <h2 className="text-2xl md:text-4xl font-semibold text-center tracking-tight text-primary pt-2">Which model?</h2>
 
-  const renderColor = () => {
-    if (!model) return null;
-    return (
-      <div className="w-full max-w-3xl px-4">
-        <h2 className="text-3xl md:text-5xl font-semibold mb-12 text-center tracking-tight text-primary">Pick a color</h2>
-        <div className="flex flex-wrap justify-center gap-6 md:gap-10">
-          {model.colors.map((c, i) => (
-            <motion.div key={c} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 + 0.15 }}
-              className="flex flex-col items-center gap-3">
-              <button onClick={() => { setColor(c); advance(5); }}
-                className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full focus:outline-none hover:scale-110 active:scale-95 transition-transform">
-                <div className="absolute inset-0 rounded-full shadow-[inset_0_2px_8px_rgba(255,255,255,0.18),inset_0_-4px_10px_rgba(0,0,0,0.5)] border border-white/10"
-                  style={{ backgroundColor: COLOR_HEX[c] ?? '#888' }} />
-                <div className="absolute -inset-2 rounded-full border border-transparent group-hover:border-primary/30 transition-colors" />
+        {/* Model grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {models.map(m => {
+            const imgEntry = MODEL_IMAGES[m.name];
+            const isSelected = selectedModelName === m.name;
+            return (
+              <button key={m.name}
+                onClick={() => {
+                  if (selectedModelName === m.name) { setSelectedModelName(null); setModel(null); setStorage(null); setColor(null); }
+                  else { setSelectedModelName(m.name); setModel(m); setStorage(null); setColor(null); }
+                }}
+                className={`group relative flex flex-col justify-between p-4 md:p-5 h-32 md:h-44 backdrop-blur-md border rounded-[1.5rem] transition-all duration-300 text-left overflow-hidden
+                  ${isSelected ? 'bg-primary/10 border-primary/60 shadow-[0_0_20px_rgba(var(--primary-rgb,99,102,241),0.15)]' : 'bg-card/40 border-border/50 hover:bg-secondary/40 hover:border-primary/30'}`}>
+                {/* Phone image */}
+                {imgEntry && (
+                  <div className="absolute right-0 bottom-0 w-20 md:w-28 h-full pointer-events-none">
+                    {imgEntry.transparent
+                      ? <img src={imgEntry.url} alt={m.name}
+                          className={`absolute bottom-0 right-1 h-full object-contain transition-opacity duration-300 ${isSelected ? 'opacity-60' : 'opacity-20 group-hover:opacity-35'}`}
+                          onError={() => {}} />
+                      : <div className={`absolute bottom-1 right-1 w-20 md:w-24 h-[85%] rounded-xl overflow-hidden transition-opacity duration-300 ${isSelected ? 'opacity-40' : 'opacity-10 group-hover:opacity-20'}`}
+                          style={{ background: 'rgba(255,255,255,0.04)' }}>
+                          <img src={imgEntry.url} alt={m.name} className="w-full h-full object-contain" onError={() => {}} />
+                        </div>
+                    }
+                  </div>
+                )}
+                <div className="flex items-start gap-1.5">
+                  <span className={`relative text-sm md:text-base font-semibold tracking-tight leading-snug transition-colors ${isSelected ? 'text-primary' : 'text-foreground/90 group-hover:text-primary'}`}>{m.name}</span>
+                  {isSelected && <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />}
+                </div>
+                <span className="relative text-xs text-muted-foreground">From {formatPrice(m.storages[0].price)}</span>
               </button>
-              <span className="text-xs md:text-sm font-medium text-muted-foreground tracking-wide text-center max-w-[70px]">{c}</span>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
+
+        {/* Inline storage + color + CTA — only when a model is selected */}
+        <AnimatePresence>
+          {selModel && (
+            <motion.div key={selModel.name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-card/60 backdrop-blur-xl border border-primary/25 rounded-[2rem] p-6 shadow-xl space-y-5">
+
+              {/* Selected model hero */}
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-20 flex-shrink-0">
+                  {(() => {
+                    const imgEntry = MODEL_IMAGES[selModel.name];
+                    if (!imgEntry) return null;
+                    return imgEntry.transparent
+                      ? <img src={imgEntry.url} alt={selModel.name} className="h-full w-full object-contain" onError={() => {}} />
+                      : <div className="h-full w-full rounded-xl overflow-hidden flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.07)' }}>
+                          <img src={imgEntry.url} alt={selModel.name} className="h-full w-full object-contain" onError={() => {}} />
+                        </div>;
+                  })()}
+                </div>
+                <div>
+                  <p className="text-base font-semibold text-primary">{selModel.name}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {storage ? formatPrice(storage.price) : `From ${formatPrice(selModel.storages[0].price)}`}
+                  </p>
+                </div>
+              </div>
+
+              {/* Storage */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Storage</span>
+                  <ChevronDown className="w-3 h-3 text-muted-foreground/40" />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {selModel.storages.map(opt => (
+                    <button key={opt.size}
+                      onClick={() => setStorage(opt)}
+                      className={`px-4 py-2 rounded-xl border text-sm font-medium transition-all duration-200
+                        ${storage?.size === opt.size
+                          ? 'bg-primary/15 border-primary/60 text-primary'
+                          : 'bg-background/40 border-border/40 text-muted-foreground hover:border-primary/30 hover:text-foreground'}`}>
+                      {opt.size} <span className="text-xs opacity-70">· {formatPrice(opt.price)}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Color */}
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Color</span>
+                  {color && <span className="text-xs text-muted-foreground font-medium">— {color}</span>}
+                  <ChevronDown className="w-3 h-3 text-muted-foreground/40" />
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {selModel.colors.map(c => (
+                    <button key={c} onClick={() => setColor(c)}
+                      title={c}
+                      className={`relative w-8 h-8 rounded-full transition-all duration-200 hover:scale-110 active:scale-95
+                        ${color === c ? 'ring-2 ring-primary ring-offset-2 ring-offset-card scale-110' : 'ring-1 ring-white/10'}`}
+                      style={{ backgroundColor: COLOR_HEX[c] ?? '#888' }}>
+                      {color === c && (
+                        <span className="absolute inset-0 flex items-center justify-center">
+                          <Check className="w-3 h-3 text-white drop-shadow" />
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* CTA */}
+              <button
+                onClick={() => { if (storage && color) advance(3); }}
+                disabled={!storage || !color}
+                className="w-full py-3.5 rounded-2xl font-semibold text-sm transition-all duration-300
+                  bg-primary text-primary-foreground hover:opacity-90 hover:-translate-y-0.5
+                  disabled:opacity-30 disabled:cursor-not-allowed disabled:translate-y-0">
+                {!storage ? 'Select storage first' : !color ? 'Pick a color' : `Proceed to Checkout · ${formatPrice(storage.price)}`}
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   };
@@ -554,7 +682,15 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
               <p className="text-2xl font-semibold text-primary mt-3">{formatPrice(storage.price)}</p>
             </div>
             <div className="w-20 h-28 flex-shrink-0 flex items-end justify-end">
-              <PhoneImage seriesKey={series!} className="h-28 w-auto object-contain object-bottom opacity-90" />
+              {(() => {
+                const imgEntry = MODEL_IMAGES[model.name];
+                if (!imgEntry) return null;
+                return imgEntry.transparent
+                  ? <img src={imgEntry.url} alt={model.name} className="h-28 w-auto object-contain opacity-90" onError={() => {}} />
+                  : <div className="h-28 w-20 rounded-xl overflow-hidden flex items-end justify-center" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                      <img src={imgEntry.url} alt={model.name} className="h-full w-full object-contain" onError={() => {}} />
+                    </div>;
+              })()}
             </div>
           </div>
         </div>
@@ -564,7 +700,7 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
         {/* Payment */}
         <div className="bg-card/40 backdrop-blur-md border border-border/40 rounded-[2rem] p-5 flex-shrink-0">
           <p className="text-sm text-muted-foreground uppercase tracking-widest mb-3">Choose Payment</p>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2">
             {paymentMethods.map(pm => (
               <button key={pm.id}
                 onClick={() => { setPayMethod(pm.id); setProofFile(null); }}
@@ -578,11 +714,11 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
           <AnimatePresence mode="wait">{payMethod && renderPaymentDetails()}</AnimatePresence>
         </div>
 
-        <button onClick={() => advance(6)} disabled={!canConfirm()}
+        <button onClick={() => advance(4)} disabled={!canConfirm()}
           className="w-full py-4 rounded-2xl font-semibold text-base transition-all flex items-center justify-center gap-2 flex-shrink-0
             bg-primary text-primary-foreground hover:opacity-90 hover:-translate-y-0.5
             disabled:opacity-30 disabled:cursor-not-allowed disabled:translate-y-0">
-          {payMethod === 'paypal' ? 'I have paid — Confirm Order' : (canConfirm() ? 'Confirm Order' : 'Upload proof to confirm')}
+          {canConfirm() ? 'Confirm Order' : 'Upload proof to confirm'}
         </button>
       </div>
     );
@@ -600,7 +736,7 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="w-full text-center">
           <h2 className="text-3xl md:text-4xl font-semibold mb-3 tracking-tight text-primary">Order Confirmed!</h2>
           <p className="text-muted-foreground text-sm mb-4 max-w-sm mx-auto leading-relaxed">
-            Your <span className="text-foreground font-medium">{model?.name}</span> is being processed. We'll send you photos of the device and battery percentage before shipping.
+            Your <span className="text-foreground font-medium">{model?.name}</span> is being processed. We'll send you photos and battery percentage before shipping.
           </p>
           <div className="bg-card/50 border border-border/30 rounded-2xl p-4 mb-4 text-left space-y-1.5">
             <div className="flex justify-between text-sm"><span className="text-muted-foreground">Order Number</span><span className="font-mono text-primary font-semibold">{orderNumber}</span></div>
@@ -622,16 +758,15 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
     switch (step) {
       case 0: return renderBrand();
       case 1: return renderSeries();
-      case 2: return renderModel();
-      case 3: return renderStorage();
-      case 4: return renderColor();
-      case 5: return renderCheckout();
-      case 6: return renderConfirmation();
+      case 2: return renderModelStep();
+      case 3: return renderCheckout();
+      case 4: return renderConfirmation();
       default: return null;
     }
   };
 
-  const isConfig = step >= 0 && step <= 4;
+  const totalVisibleSteps = 3; // Brand, Series, Model
+  const isConfigStep = step >= 0 && step <= 2;
 
   return (
     <div className="h-[100dvh] w-full flex flex-col bg-background text-foreground overflow-hidden selection:bg-primary/20">
@@ -652,7 +787,11 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          {isConfig && <span className="text-xs text-muted-foreground tracking-widest">Step {step + 1} / 5</span>}
+          {isConfigStep && (
+            <span className="text-xs text-muted-foreground tracking-widest">
+              Step {step + 1} / {totalVisibleSteps}
+            </span>
+          )}
           <button onClick={() => setShowAbout(true)} className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary/40 transition-all">
             <Info className="w-4 h-4" />
           </button>
@@ -664,13 +803,13 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
         {/* Breadcrumbs */}
         <div className="absolute top-0 left-0 w-full flex justify-center pt-4 pointer-events-none z-30">
           <AnimatePresence mode="wait">
-            {crumbs.length > 0 && step < 5 && (
+            {crumbs.length > 0 && step < 3 && (
               <motion.div key={crumbs.length} initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
                 className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium pointer-events-auto bg-background/50 backdrop-blur-xl px-4 py-2 rounded-full border border-border/30 shadow-lg">
                 {crumbs.map((c, idx) => (
                   <React.Fragment key={c.step}>
                     {idx > 0 && <span className="opacity-30 mx-0.5">·</span>}
-                    <button onClick={() => retreat(c.step)} className="hover:text-primary transition-colors truncate max-w-[80px]">{c.label}</button>
+                    <button onClick={() => retreat(c.step)} className="hover:text-primary transition-colors truncate max-w-[100px]">{c.label}</button>
                   </React.Fragment>
                 ))}
               </motion.div>
@@ -683,7 +822,7 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div key={step} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit"
               className="absolute inset-0 flex items-center justify-center pb-16 pt-12"
-              style={{ overflowX: 'hidden', overflowY: (step === 5 || step === 6) ? 'visible' : 'hidden' }}>
+              style={{ overflowX: 'hidden', overflowY: (step >= 2) ? 'visible' : 'hidden' }}>
               {renderStep()}
             </motion.div>
           </AnimatePresence>
@@ -693,7 +832,7 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
       {/* Footer */}
       <footer className="h-16 flex-shrink-0 flex items-center justify-between px-6 md:px-12 z-20 border-t border-border/10 bg-background/50 backdrop-blur-xl relative">
         <div className="w-20">
-          {step > 0 && step < 6 && (
+          {step > 0 && step < 4 && (
             <button onClick={() => retreat(step - 1)}
               className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group">
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
@@ -702,7 +841,7 @@ export default function TechStore({ onBack }: { onBack: () => void }) {
         </div>
         <div className="text-center">
           <AnimatePresence mode="wait">
-            {storage && step < 6 && (
+            {storage && step < 4 && (
               <motion.div key={storage.price} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex flex-col items-center">
                 <span className="text-[10px] text-muted-foreground uppercase tracking-widest mb-0.5">Total</span>
                 <span className="text-xl md:text-2xl tracking-tight">{formatPrice(storage.price)}</span>

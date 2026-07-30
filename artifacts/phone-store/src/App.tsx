@@ -62,10 +62,7 @@ function HomePage({ onSelect }: { onSelect: (s: Store) => void }) {
                 <img src="/logo.png" alt="Tech Inc" className="w-14 h-14 object-contain" />
               </div>
 
-              <h2 className="text-2xl font-bold text-primary mb-1 tracking-tight">Tech Inc</h2>
-              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                A subsidiary of Happy Man Enterprise PTY LTD
-              </p>
+              <h2 className="text-2xl font-bold text-primary mb-3 tracking-tight">Tech Inc</h2>
               <p className="text-sm text-foreground/60 leading-relaxed mb-5">
                 Certified refurbished iPhones, Samsung & Pixel phones. Battery health guaranteed over 80%.
               </p>
