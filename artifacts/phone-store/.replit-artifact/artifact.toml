@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Refurbished Phone Store"
+title = "Happy Man Enterprise"
 version = "1.0.0"
 id = "artifacts/phone-store"
 router = "path"
