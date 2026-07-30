@@ -1,0 +1,113 @@
+S25 Series
+
+    Samsung S25 - 128 GB ($475): P10,365.89
+
+    Samsung S25 Ultra 256 GB ($700): P14,518.15
+
+    Samsung S25 Ultra 512 GB ($780): P15,994.51
+
+    Samsung S25 PLUS - 256 GB ($600): P12,672.70
+
+    Samsung S25 FE - 128 GB ($380): P8,612.71
+
+    Samsung Galaxy S25 Edge - 256 GB ($440): P9,719.98
+
+    Samsung Galaxy S25 Edge - 512 GB ($570): P12,119.07
+
+S24 Series
+
+    Samsung Galaxy S24 - 128 GB ($380): P8,612.71
+
+    Samsung Galaxy S24 - 256 GB ($400): P8,981.80
+
+    Samsung Galaxy S24 FE - 128 GB ($330): P7,689.99
+
+    Samsung Galaxy S24 FE - 256 GB: No USD price provided
+
+    Samsung Galaxy S24 Plus - 256 GB ($400): P8,981.80
+
+    Samsung Galaxy S24 Plus - 512 GB ($450): P9,904.53
+
+    Samsung Galaxy S24 Ultra - 256 GB ($530): P11,380.89
+
+    Samsung Galaxy S24 Ultra - 512 GB ($600): P12,672.70
+
+S23 Series
+
+    Samsung Galaxy S23 - 128 GB ($240): P6,029.08
+
+    Samsung Galaxy S23 - 256 GB ($300): P7,136.35
+
+    Samsung Galaxy S23 FE - 128 GB ($230): P5,844.54
+
+    Samsung Galaxy S23 Plus - 256 GB ($330): P7,689.99
+
+    Samsung Galaxy S23 Ultra - 256 GB ($470): P10,273.62
+
+    Samsung Galaxy S23 Ultra - 512 GB ($500): P10,827.25
+
+S22 Series
+
+    Samsung Galaxy S22 - 128 GB ($200): P5,290.90
+
+    Samsung Galaxy S22 - 256 GB ($220): P5,660.00
+
+    Samsung Galaxy S22 Plus - 128 GB ($213): P5,530.81
+
+    Samsung Galaxy S22 Plus - 256 GB ($250): P6,213.63
+
+    Samsung Galaxy S22 Ultra - 12 GB [128GB assumed based on previous prompt] ($365): P8,335.89
+
+    Samsung Galaxy S22 Ultra - 256 GB ($350): P8,059.08
+
+    Samsung Galaxy S22 Ultra - 512 GB ($410): P9,166.35
+
+S26 Series
+
+    Samsung Galaxy S26 - 256 GB ($680): P14,149.06
+
+    Samsung Galaxy S26 - 512 GB ($777): P15,939.15
+
+    Samsung Galaxy S26 Plus - 256 GB ($855): P17,378.60
+
+    Samsung Galaxy S26 Plus - 512 GB ($860): P17,470.87
+
+    Samsung Galaxy S26 Ultra - 256 GB ($933): P18,818.05
+
+    Samsung Galaxy S26 Ultra - 512 GB ($1061): P21,180.22
+
+Z Flip & Z Fold Series
+
+    Samsung Galaxy Z Flip3 5G - 128 GB ($225): P5,752.26
+
+    Samsung Galaxy Z Flip4 5G - 128 GB ($250): P6,213.63
+
+    Samsung Galaxy Z Flip4 5G - 256 GB ($270): P6,582.72
+
+    Samsung Galaxy Z Flip5 - 512 GB ($340): P7,874.53
+
+    Samsung Galaxy Z Flip6 - 256 GB ($380): P8,612.71
+
+    Samsung Galaxy Z Flip6 - 512 GB ($450): P9,904.53
+
+    Samsung Galaxy Z Flip7 - 256 GB ($650): P13,595.43
+
+    Samsung Galaxy Z Flip7 - 512 GB ($800): P16,363.60
+
+    Samsung Galaxy Z Fold7 - 256 GB ($835): P17,009.51
+
+    Samsung Galaxy Z Fold7 - 512 GB ($1050): P20,977.23
+
+    Samsung Galaxy Z Fold7 - 1 TB ($1100): P21,899.95
+
+    Samsung Galaxy Z Fold6 - 512 GB ($680): P14,149.06
+
+    Samsung Galaxy Z Fold5 - 256 GB ($580): P12,303.61
+
+    Samsung Galaxy Z Fold5 - 512 GB ($721): P14,905.69
+
+    Samsung Galaxy Z Fold4 5G - 512 GB ($450): P9,904.53
+
+    Samsung Galaxy Z Fold3 5G - 256 GB ($310): P7,320.90
+
+    Samsung Galaxy Z Fold3 5G - 512 GB ($360): P8,243.62

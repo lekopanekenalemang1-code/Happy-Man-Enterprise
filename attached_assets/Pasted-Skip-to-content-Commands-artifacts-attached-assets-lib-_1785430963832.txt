@@ -1,0 +1,134 @@
+Skip to content
+
+Commands
+artifacts
+attached_assets
+lib
+scripts
+replit.md
+tsconfig.base.json
+tsconfig.json
+Packager files
+package.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+Make sure the pictures used match the phone models. Remove background for each picture so it looks clean. Do the same for olams footprint as well and add payments via bank transfer for FNB, Absa and Orange money. The name Happy Man Rental still repeats on every page fix that, and instead of going to another page at the model page have a drop down that selects storage, then color then thats when you can go to the payment/ordering menu
+4 hours ago
+Addressing requested website content updates
+
+Let me read both store files to understand the current structure before making changes.
+
+Now I have a clear picture of everything needed. Let me plan the full changes:
+
+    TechStore — Per-model images (Apple CDN fmt=png-alpha for transparent PNGs), model page becomes a single step with inline storage chips + color swatches + CTA
+    OlamStore — Brand/product images, FNB/ABSA/Orange payment section in the order step
+    App.tsx — Remove the duplicate "subsidiary" text (parent company shows in header, no need to repeat in the card)
+    Breadcrumbs/step counter — Adjust for the new collapsed step count
+
+I'll rewrite both store files in parallel now.
+
+Home page is clean. Let me remove the duplicate "A subsidiary of…" line from the Tech Inc card — it's already in the header.
+
+Everything is working cleanly. Here's a summary of all changes made:
+
+Tech Inc (phone store):
+
+    Per-model images — Apple CDN upgraded to fmt=png-alpha for true transparent PNGs (no white box) on all iPhones 12→17. Samsung and Pixel models now have individual GSMArena entries (e.g. Galaxy S22 vs S22 Ultra show their actual device image). Non-transparent images are shown in a subtle frosted frame.
+    Model page redesigned — No more separate Storage and Color pages. Tapping a model card highlights it in place; an animated panel slides in below showing storage chips (with price) + color swatches. The "Proceed to Checkout" button stays greyed out until both are picked. Steps now show Step 1/3, 2/3, 3/3.
+    PayPal removed — Payment methods are now FNB Bank Transfer, Orange Money, and ABSA Bank Transfer only (all three show account name, account number, branch code, reference, and a proof-of-payment upload).
+    "Happy Man Enterprise" no longer repeats — The home screen header says it once. The Tech Inc card no longer has the "subsidiary of…" sub-line. Store pages show only their own name in the header.
+
+Olam's Footprints (shoe store):
+
+    Category images — Each brand card has a real product hero image as a subtle background wash. The product step header also shows the brand image.
+    FNB, ABSA, Orange Money payments — Full payment section added to the order summary step, matching the same style as Tech Inc (account details, reference number, copy buttons, proof-of-payment upload). WhatsApp button still present as the primary CTA.
+
+Still to fill in (placeholders in code):
+
+    UPDATE_FNB_ACC_NO / UPDATE_BRANCH in TechStore.tsx → PAYMENT_INFO.fnb
+    UPDATE_ABSA_ACC_NO in TechStore.tsx → PAYMENT_INFO.absa
+    UPDATE_OLAM_FNB_ACC / UPDATE_OLAM_ABSA_ACC in OlamStore.tsx → OLAM_PAYMENT
+
+Website
+
+REMOVE OLAMS FOOTPRINTS STORE COMPLETELY - I love the slogan on the bottom. The tech inc one is "Start small, Start scrappy, but whatever you do, JUST START!"
+
+Add a section on each page for contact us via whatsapp - @74066703 incase customer has enquiries
+
+Please get pictures for all the phone models, find them on the internet, official websiste, remove the backgeound. Just one picture per phone, it does not have to match the color
+
+let the customer know at checkout that they will be sent pictures of their phone within 48 hours after placing the order before shipping, so they see the condition of the phone and will also share the battery percentage.
+
+Add about us section on every page at the bottom, add that Tech Inc is a business under Happy Man PTY LTD. Primary operations of business are in Palapye BIUST.
+
+Owner
+1 hour ago
+
+REMOVE OLAMS FOOTPRINTS STORE COMPLETELY - I love the slogan on the bottom. The tech inc one is "Start small, Start scrappy, but whatever you do, JUST START!"
+
+Add a section on each page for contact us via whatsapp - @74066703 incase customer has enquiries
+
+Please get pictures for all the phone models, find them on the internet, official websiste, remove the backgeound. Just one picture per phone, it does not have to match the color
+
+let the customer know at checkout that they will be sent pictures of their phone within 48 hours after placing the order before shipping, so they see the condition of the phone and will also share the battery percentage.
+
+Add about us section on every page at the bottom, add that Tech Inc is a business under Happy Man PTY LTD. Primary operations of business are in Palapye BIUST. The store sells refurbished tech from the US and will eventually grow to smart watches, consoles, and laptops. We would also like to open the store to other entreprenuers to host their businessess here therefore creating a one stop shop for everything.
+
+Owner is Lekopane Kenalemang
+
+Add my linked in https://www.linkedin.com/in/special-lekopane21
+
+and my instagram: https://www.instagram.com/walahi.special241/
+60 minutes ago
+
+Some URLs returned HTML (wrong filenames). Let me retry the failed ones with alternate naming patterns.
+
+The trailing-dash pattern worked for Pixel 9 — let me try that variant for the rest.
+
+Some Apple asset names don't exist. Let me brute-force known naming variants for the Pro/failed models.
+
+8 Pro models still fail on Apple's CDN. I'll grab those from GSMArena instead and include them in background removal.
+
+All 37 raw images downloaded. Now removing backgrounds on all of them.
+
+Now implementing all the code changes. First, App.tsx and deleting OlamStore:
+
+Now the TechStore updates — images, business info, about modal, footer, and checkout notes:
+
+Let me verify the local phone images serve correctly, then run the code review.
+Initiating code review process
+Adding type assertions to variants
+Finalizing deployment and documentation
+Concluding the project and recommending deployment
+Confirming project completion
+Concluding project tasks
+
+The work is complete — no further follow-up tasks needed. The only outstanding item is the bank account numbers, which just need to come from you whenever ready.
+Republish
+Status
+Lekopanekenalemang1 published about 1 hour ago
+Visibility
+Public
+Domains
+happymanenterprise.replit.app
+Engagement tools
+Enable feedback widget
+
+these are the samsung prices
+
+ignore the prices in $ just use the prices in BWP (P)
+
+On the home page under the different phone brands have a title written coming soon, and make a horizontal loop of, smart watches, nothing phone logo, one plus logo, oppo logo, vivo logo, xiaomi logo, poco logo, redmi logo, xbox, sony, garmin logo. All in their original colors to add a bit of some color on the home page.
+
+the loop should't be fast, just slow
+
+the instagram link is @nothing.special110 instead of @walahi.special
+
+for banking these are my details
+
+FNB Account Type: Transmission Account Account Number: 63015381691 Branch Code: 283567
+
+ABSA Account Number: 1650631 Branch Code: 17
+
+Orange Money Mumber

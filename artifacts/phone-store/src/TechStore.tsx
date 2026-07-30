@@ -4,8 +4,9 @@ import {
   ArrowLeft, CheckCircle2, Upload, X, Copy, Check, ExternalLink, Info,
   Shield, Battery, Unlock, Truck, Camera, RotateCcw, ChevronDown
 } from 'lucide-react';
-import { Linkedin } from 'lucide-react';
-import { SiApple, SiSamsung, SiGoogle, SiInstagram, SiTiktok, SiWhatsapp } from 'react-icons/si';
+import { Linkedin, Watch } from 'lucide-react';
+import { SiApple, SiSamsung, SiGoogle, SiInstagram, SiTiktok, SiWhatsapp, SiOneplus, SiOppo, SiVivo, SiXiaomi, SiSony, SiGarmin } from 'react-icons/si';
+import { FaXbox } from 'react-icons/fa';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -24,7 +25,7 @@ const BUSINESS = {
   tiktok:   '@Happymanenterprisebw',
   owner:     'Lekopane Kenalemang',
   linkedin:  'https://www.linkedin.com/in/special-lekopane21',
-  instagram: 'https://www.instagram.com/walahi.special241/',
+  instagram: 'https://www.instagram.com/nothing.special110/',
   location:  'Palapye, BIUST',
   about: [
     'Tech Inc is a business under Happy Man Enterprise PTY LTD, with primary operations at Palapye BIUST. We sell certified refurbished tech sourced from the US — starting with phones, and growing into smartwatches, consoles and laptops.',
@@ -38,19 +39,19 @@ const PAYMENT_INFO = {
   fnb: {
     bankName:      'FNB (First National Bank)',
     accountName:   'Happy Man Enterprise PTY LTD',
-    accountNumber: 'UPDATE_FNB_ACC_NO',
-    branchCode:    'UPDATE_BRANCH',
-    accountType:   'Current Account',
+    accountNumber: '63015381691',
+    branchCode:    '283567',
+    accountType:   'Transmission Account',
   },
   orange: {
-    name:   'Happy Man Enterprise',
-    number: '+267 74066703',
+    name:   'Lekopane Kenalemang',
+    number: '+267 76 579 946',
   },
   absa: {
     bankName:      'ABSA Bank Botswana',
     accountName:   'Happy Man Enterprise PTY LTD',
-    accountNumber: 'UPDATE_ABSA_ACC_NO',
-    branchCode:    'UPDATE_BRANCH',
+    accountNumber: '1650631',
+    branchCode:    '17',
     accountType:   'Current Account',
   },
 } as const;
@@ -91,6 +92,26 @@ const MODEL_IMAGES: Record<string, { url: string; transparent: boolean }> = {
   'Galaxy S24':         img('galaxy-s24'),
   'Galaxy S24+':        img('galaxy-s24-plus'),
   'Galaxy S24 Ultra':   img('galaxy-s24-ultra'),
+  'Galaxy S23 FE':      img('galaxy-s23-fe'),
+  'Galaxy S24 FE':      img('galaxy-s24-fe'),
+  'Galaxy S25':         img('galaxy-s25'),
+  'Galaxy S25 FE':      img('galaxy-s25-fe'),
+  'Galaxy S25+':        img('galaxy-s25-plus'),
+  'Galaxy S25 Edge':    img('galaxy-s25-edge'),
+  'Galaxy S25 Ultra':   img('galaxy-s25-ultra'),
+  'Galaxy S26':         img('galaxy-s26'),
+  'Galaxy S26+':        img('galaxy-s26-plus'),
+  'Galaxy S26 Ultra':   img('galaxy-s26-ultra'),
+  'Galaxy Z Flip3':     img('galaxy-z-flip3'),
+  'Galaxy Z Flip4':     img('galaxy-z-flip4'),
+  'Galaxy Z Flip5':     img('galaxy-z-flip5'),
+  'Galaxy Z Flip6':     img('galaxy-z-flip6'),
+  'Galaxy Z Flip7':     img('galaxy-z-flip7'),
+  'Galaxy Z Fold3':     img('galaxy-z-fold3'),
+  'Galaxy Z Fold4':     img('galaxy-z-fold4'),
+  'Galaxy Z Fold5':     img('galaxy-z-fold5'),
+  'Galaxy Z Fold6':     img('galaxy-z-fold6'),
+  'Galaxy Z Fold7':     img('galaxy-z-fold7'),
   'Pixel 6':            img('pixel-6'),
   'Pixel 6 Pro':        img('pixel-6-pro'),
   'Pixel 6a':           img('pixel-6a'),
@@ -156,19 +177,47 @@ const CATALOG: Record<string, BrandData> = {
   Samsung: {
     series: {
       'Galaxy S22': [
-        { name: 'Galaxy S22',      colors: ['Phantom Black','Phantom White','Pink Gold','Green'], storages: [{ size:'128GB', price:6200 },{ size:'256GB', price:7000 }] },
-        { name: 'Galaxy S22+',     colors: ['Phantom Black','Phantom White','Pink Gold','Green'], storages: [{ size:'128GB', price:7500 },{ size:'256GB', price:8200 }] },
-        { name: 'Galaxy S22 Ultra',colors: ['Phantom Black','Phantom White','Burgundy','Green'],  storages: [{ size:'128GB', price:9500 },{ size:'256GB', price:10500 }] },
+        { name: 'Galaxy S22',      colors: ['Phantom Black','Phantom White','Pink Gold','Green'], storages: [{ size:'128GB', price:5290.90 },{ size:'256GB', price:5660.00 }] },
+        { name: 'Galaxy S22+',     colors: ['Phantom Black','Phantom White','Pink Gold','Green'], storages: [{ size:'128GB', price:5530.81 },{ size:'256GB', price:6213.63 }] },
+        { name: 'Galaxy S22 Ultra',colors: ['Phantom Black','Phantom White','Burgundy','Green'],  storages: [{ size:'128GB', price:8335.89 },{ size:'256GB', price:8059.08 },{ size:'512GB', price:9166.35 }] },
       ],
       'Galaxy S23': [
-        { name: 'Galaxy S23',      colors: ['Phantom Black','Cream','Green','Lavender'], storages: [{ size:'128GB', price:8200 },{ size:'256GB', price:9500 }] },
-        { name: 'Galaxy S23+',     colors: ['Phantom Black','Cream','Green','Lavender'], storages: [{ size:'256GB', price:10800 }] },
-        { name: 'Galaxy S23 Ultra',colors: ['Phantom Black','Cream','Green','Lavender'], storages: [{ size:'256GB', price:13500 },{ size:'512GB', price:15000 }] },
+        { name: 'Galaxy S23',      colors: ['Phantom Black','Cream','Green','Lavender'],   storages: [{ size:'128GB', price:6029.08 },{ size:'256GB', price:7136.35 }] },
+        { name: 'Galaxy S23 FE',   colors: ['Mint','Cream','Graphite','Purple'],           storages: [{ size:'128GB', price:5844.54 }] },
+        { name: 'Galaxy S23+',     colors: ['Phantom Black','Cream','Green','Lavender'],   storages: [{ size:'256GB', price:7689.99 }] },
+        { name: 'Galaxy S23 Ultra',colors: ['Phantom Black','Cream','Green','Lavender'],   storages: [{ size:'256GB', price:10273.62 },{ size:'512GB', price:10827.25 }] },
       ],
       'Galaxy S24': [
-        { name: 'Galaxy S24',      colors: ['Onyx Black','Marble Gray','Cobalt Violet','Amber Yellow'],         storages: [{ size:'128GB', price:10500 },{ size:'256GB', price:12000 }] },
-        { name: 'Galaxy S24+',     colors: ['Onyx Black','Marble Gray','Cobalt Violet','Amber Yellow'],         storages: [{ size:'256GB', price:13500 }] },
-        { name: 'Galaxy S24 Ultra',colors: ['Titanium Black','Titanium Gray','Titanium Violet','Titanium Yellow'], storages: [{ size:'256GB', price:17500 },{ size:'512GB', price:19500 }] },
+        { name: 'Galaxy S24',      colors: ['Onyx Black','Marble Gray','Cobalt Violet','Amber Yellow'],            storages: [{ size:'128GB', price:8612.71 },{ size:'256GB', price:8981.80 }] },
+        { name: 'Galaxy S24 FE',   colors: ['Blue','Graphite','Gray','Mint','Yellow'],                             storages: [{ size:'128GB', price:7689.99 }] },
+        { name: 'Galaxy S24+',     colors: ['Onyx Black','Marble Gray','Cobalt Violet','Amber Yellow'],            storages: [{ size:'256GB', price:8981.80 },{ size:'512GB', price:9904.53 }] },
+        { name: 'Galaxy S24 Ultra',colors: ['Titanium Black','Titanium Gray','Titanium Violet','Titanium Yellow'], storages: [{ size:'256GB', price:11380.89 },{ size:'512GB', price:12672.70 }] },
+      ],
+      'Galaxy S25': [
+        { name: 'Galaxy S25',      colors: ['Navy','Icyblue','Mint','Silver Shadow'],                                     storages: [{ size:'128GB', price:10365.89 }] },
+        { name: 'Galaxy S25 FE',   colors: ['Navy','Jetblack','White','Icyblue'],                                         storages: [{ size:'128GB', price:8612.71 }] },
+        { name: 'Galaxy S25+',     colors: ['Navy','Icyblue','Mint','Silver Shadow'],                                     storages: [{ size:'256GB', price:12672.70 }] },
+        { name: 'Galaxy S25 Edge', colors: ['Titanium Silver','Titanium Jetblack','Titanium Icyblue'],                    storages: [{ size:'256GB', price:9719.98 },{ size:'512GB', price:12119.07 }] },
+        { name: 'Galaxy S25 Ultra',colors: ['Titanium Silverblue','Titanium Black','Titanium Whitesilver','Titanium Gray'], storages: [{ size:'256GB', price:14518.15 },{ size:'512GB', price:15994.51 }] },
+      ],
+      'Galaxy S26': [
+        { name: 'Galaxy S26',      colors: ['Onyx Black','Silver','Blue'], storages: [{ size:'256GB', price:14149.06 },{ size:'512GB', price:15939.15 }] },
+        { name: 'Galaxy S26+',     colors: ['Onyx Black','Silver','Blue'], storages: [{ size:'256GB', price:17378.60 },{ size:'512GB', price:17470.87 }] },
+        { name: 'Galaxy S26 Ultra',colors: ['Onyx Black','Silver','Blue'], storages: [{ size:'256GB', price:18818.05 },{ size:'512GB', price:21180.22 }] },
+      ],
+      'Galaxy Z Flip': [
+        { name: 'Galaxy Z Flip3', colors: ['Phantom Black','Cream','Green','Lavender'],  storages: [{ size:'128GB', price:5752.26 }] },
+        { name: 'Galaxy Z Flip4', colors: ['Bora Purple','Graphite','Pink Gold','Blue'], storages: [{ size:'128GB', price:6213.63 },{ size:'256GB', price:6582.72 }] },
+        { name: 'Galaxy Z Flip5', colors: ['Mint','Graphite','Cream','Lavender'],        storages: [{ size:'512GB', price:7874.53 }] },
+        { name: 'Galaxy Z Flip6', colors: ['Silver Shadow','Yellow','Blue','Mint'],      storages: [{ size:'256GB', price:8612.71 },{ size:'512GB', price:9904.53 }] },
+        { name: 'Galaxy Z Flip7', colors: ['Blue Shadow','Jetblack','Coralred'],         storages: [{ size:'256GB', price:13595.43 },{ size:'512GB', price:16363.60 }] },
+      ],
+      'Galaxy Z Fold': [
+        { name: 'Galaxy Z Fold3', colors: ['Phantom Black','Phantom Green','Phantom Silver'], storages: [{ size:'256GB', price:7320.90 },{ size:'512GB', price:8243.62 }] },
+        { name: 'Galaxy Z Fold4', colors: ['Graygreen','Beige','Phantom Black'],              storages: [{ size:'512GB', price:9904.53 }] },
+        { name: 'Galaxy Z Fold5', colors: ['Icy Blue','Phantom Black','Cream'],               storages: [{ size:'256GB', price:12303.61 },{ size:'512GB', price:14905.69 }] },
+        { name: 'Galaxy Z Fold6', colors: ['Silver Shadow','Pink','Navy'],                    storages: [{ size:'512GB', price:14149.06 }] },
+        { name: 'Galaxy Z Fold7', colors: ['Blue Shadow','Silver Shadow','Jetblack'],         storages: [{ size:'256GB', price:17009.51 },{ size:'512GB', price:20977.23 },{ size:'1TB', price:21899.95 }] },
       ],
     },
   },
@@ -231,6 +280,11 @@ const COLOR_HEX: Record<string, string> = {
   'Chalk':'#f0ede8','Charcoal':'#3d3d3d','Sage':'#8cad8e',
   'Bay':'#4a7a9b','Aloe':'#7fad7f','Sea':'#5b9ab5','Coral':'#f07a5c',
   'Sea Cloud':'#b8d4e0','Leaf':'#7fa87f','Matte Hazel':'#6a7665','Iris':'#8b7bb5',
+  'Mint':'#bfe3d0','Navy':'#1f2a44','Icyblue':'#bcd9e8','Silver Shadow':'#c9c9cd','Jetblack':'#0f0f10',
+  'Titanium Silverblue':'#9fb2c8','Titanium Whitesilver':'#e8e8ea','Titanium Silver':'#d4d4d8',
+  'Titanium Jetblack':'#161618','Titanium Icyblue':'#b6d2e2','Gray':'#8e8e93','Blue Shadow':'#5a6f8f',
+  'Coralred':'#e8564a','Bora Purple':'#b09fce','Phantom Green':'#3d4a3f','Phantom Silver':'#d8d8d8',
+  'Graygreen':'#8a9a8a','Beige':'#e0d4c0','Icy Blue':'#c2dcec',
 };
 
 const BRAND_ICONS: Record<string, React.ElementType> = {
@@ -239,13 +293,52 @@ const BRAND_ICONS: Record<string, React.ElementType> = {
   'Google Pixel': SiGoogle,
 };
 
+// ─── Coming Soon marquee ──────────────────────────────────────────────────────
+
+const COMING_SOON: { label: string; color: string; Icon?: React.ElementType; wordmark?: string; font?: string }[] = [
+  { label: 'Smart Watches', color: '#22d3ee', Icon: Watch },
+  { label: 'Nothing',       color: '#ffffff', wordmark: 'NOTHING', font: "'Courier New', monospace" },
+  { label: 'OnePlus',       color: '#F5010C', Icon: SiOneplus },
+  { label: 'OPPO',          color: '#1EA366', Icon: SiOppo },
+  { label: 'vivo',          color: '#415FFF', Icon: SiVivo },
+  { label: 'Xiaomi',        color: '#FF6900', Icon: SiXiaomi },
+  { label: 'POCO',          color: '#FFD600', wordmark: 'POCO' },
+  { label: 'Redmi',         color: '#FF4A00', wordmark: 'Redmi' },
+  { label: 'Xbox',          color: '#107C10', Icon: FaXbox },
+  { label: 'Sony',          color: '#e8e8e8', Icon: SiSony },
+  { label: 'Garmin',        color: '#007CC3', Icon: SiGarmin },
+];
+
+function ComingSoonMarquee() {
+  const items = [...COMING_SOON, ...COMING_SOON]; // duplicated for seamless loop
+  return (
+    <div className="mt-10 w-full">
+      <p className="text-center text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground/60 mb-4">Coming Soon</p>
+      <div className="relative overflow-hidden marquee-mask">
+        <div className="marquee-track flex items-center gap-10 w-max">
+          {items.map(({ label, color, Icon, wordmark, font }, i) => (
+            <div key={`${label}-${i}`} className="flex items-center gap-2.5 flex-shrink-0 opacity-80">
+              {Icon
+                ? <Icon className="w-6 h-6" style={{ color }} />
+                : <span className="text-base font-black tracking-widest" style={{ color, fontFamily: font }}>{wordmark}</span>}
+              {Icon && <span className="text-xs font-medium" style={{ color }}>{label}</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const slideVariants: import('framer-motion').Variants = {
   enter:  (dir: number) => ({ x: dir > 0 ? '10%' : '-10%', opacity: 0, scale: 0.95, filter: 'blur(8px)' }),
   center: { x: 0, opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
   exit:   (dir: number) => ({ x: dir < 0 ? '10%' : '-10%', opacity: 0, scale: 0.95, filter: 'blur(8px)', transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } }),
 };
 
-function formatPrice(p: number) { return 'P' + p.toLocaleString('en-ZA'); }
+function formatPrice(p: number) {
+  return 'P' + p.toLocaleString('en-US', { minimumFractionDigits: Number.isInteger(p) ? 0 : 2, maximumFractionDigits: 2 });
+}
 
 function generateOrder() {
   const num = Math.floor(Math.random() * 9900) + 100;
@@ -309,7 +402,7 @@ function AboutModal({ onClose }: { onClose: () => void }) {
   const socials = [
     { Icon: SiWhatsapp,  label: 'WhatsApp',  handle: BUSINESS.whatsapp,           href: `https://wa.me/${BUSINESS.whatsapp.replace(/\D/g,'')}` },
     { Icon: Linkedin,    label: 'LinkedIn',  handle: 'special-lekopane21',        href: BUSINESS.linkedin },
-    { Icon: SiInstagram, label: 'Instagram', handle: '@walahi.special241',        href: BUSINESS.instagram },
+    { Icon: SiInstagram, label: 'Instagram', handle: '@nothing.special110',       href: BUSINESS.instagram },
     { Icon: SiTiktok,    label: 'TikTok',    handle: BUSINESS.tiktok,             href: `https://tiktok.com/${BUSINESS.tiktok}` },
   ];
   return (
@@ -464,8 +557,8 @@ export default function TechStore() {
   // ── Step renderers ────────────────────────────────────────────────────────────
 
   const renderBrand = () => (
-    <div className="w-full max-w-4xl px-4">
-      <h2 className="text-3xl md:text-5xl font-semibold mb-10 text-center tracking-tight text-primary">Choose your brand</h2>
+    <div className="w-full max-w-4xl px-4" style={{ maxHeight: 'calc(100dvh - 180px)', overflowY: 'auto', overflowX: 'hidden' }}>
+      <h2 className="text-2xl md:text-4xl font-semibold mb-6 md:mb-10 text-center tracking-tight text-primary pt-2">Choose your brand</h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {Object.keys(CATALOG).map(b => {
           const Icon = BRAND_ICONS[b];
@@ -479,6 +572,7 @@ export default function TechStore() {
           );
         })}
       </div>
+      <ComingSoonMarquee />
     </div>
   );
 
