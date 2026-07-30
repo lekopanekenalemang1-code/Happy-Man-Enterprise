@@ -13,6 +13,13 @@ import { FaXbox } from 'react-icons/fa';
 type StorageOption = { size: string; price: number };
 type PhoneModel    = { name: string; colors: string[]; storages: StorageOption[] };
 type BrandData     = { series: Record<string, PhoneModel[]> };
+type CustomerDetails = {
+  name: string;
+  contactDetails: string;
+  phone: string;
+  email: string;
+  address: string;
+};
 
 // ─── Business Info ────────────────────────────────────────────────────────────
 
@@ -140,18 +147,18 @@ const CATALOG: Record<string, BrandData> = {
   iPhone: {
     series: {
       'iPhone 12': [
-        { name: 'iPhone 12',        colors: ['Black','White','Red','Blue','Green','Purple'],                storages: [{ size:'64GB', price:3600 },{ size:'128GB', price:4500 }] },
+        { name: 'iPhone 12',        colors: ['Black','White','(PRODUCT)RED','Blue','Green','Purple'],       storages: [{ size:'64GB', price:3600 },{ size:'128GB', price:4500 }] },
         { name: 'iPhone 12 Pro',    colors: ['Pacific Blue','Gold','Graphite','Silver'],                   storages: [{ size:'128GB', price:5400 }] },
         { name: 'iPhone 12 Pro Max',colors: ['Pacific Blue','Gold','Graphite','Silver'],                   storages: [{ size:'128GB', price:5800 }] },
       ],
       'iPhone 13': [
-        { name: 'iPhone 13',        colors: ['Midnight','Starlight','Blue','Pink','Green','Red'],           storages: [{ size:'128GB', price:5200 },{ size:'256GB', price:6500 }] },
+        { name: 'iPhone 13',        colors: ['(PRODUCT)RED','Starlight','Midnight','Blue','Pink','Green'],   storages: [{ size:'128GB', price:5200 },{ size:'256GB', price:6500 }] },
         { name: 'iPhone 13 Pro',    colors: ['Alpine Green','Sierra Blue','Gold','Silver','Graphite'],      storages: [{ size:'128GB', price:6650 },{ size:'256GB', price:7550 }] },
         { name: 'iPhone 13 Pro Max',colors: ['Alpine Green','Sierra Blue','Gold','Silver','Graphite'],      storages: [{ size:'128GB', price:7500 },{ size:'256GB', price:8400 }] },
       ],
       'iPhone 14': [
-        { name: 'iPhone 14',        colors: ['Midnight','Starlight','Blue','Purple','Red','Yellow'],        storages: [{ size:'128GB', price:5900 },{ size:'256GB', price:6700 }] },
-        { name: 'iPhone 14 Plus',   colors: ['Midnight','Starlight','Blue','Purple','Red','Yellow'],        storages: [{ size:'128GB', price:6300 },{ size:'256GB', price:7300 }] },
+        { name: 'iPhone 14',        colors: ['Midnight','Purple','Starlight','(PRODUCT)RED','Blue','Yellow'], storages: [{ size:'128GB', price:5900 },{ size:'256GB', price:6700 }] },
+        { name: 'iPhone 14 Plus',   colors: ['Midnight','Purple','Starlight','(PRODUCT)RED','Blue','Yellow'], storages: [{ size:'128GB', price:6300 },{ size:'256GB', price:7300 }] },
         { name: 'iPhone 14 Pro',    colors: ['Deep Purple','Gold','Silver','Space Black'],                  storages: [{ size:'128GB', price:7350 },{ size:'256GB', price:8100 }] },
         { name: 'iPhone 14 Pro Max',colors: ['Deep Purple','Gold','Silver','Space Black'],                  storages: [{ size:'128GB', price:8500 },{ size:'256GB', price:10200 }] },
       ],
@@ -168,56 +175,56 @@ const CATALOG: Record<string, BrandData> = {
         { name: 'iPhone 16 Pro Max',colors: ['Black Titanium','White Titanium','Desert Titanium','Natural Titanium'], storages: [{ size:'256GB', price:15400 }] },
       ],
       'iPhone 17': [
-        { name: 'iPhone 17',        colors: ['Black','White','Ultramarine','Rose Quartz'],                  storages: [{ size:'256GB', price:13900 },{ size:'512GB', price:17500 }] },
-        { name: 'iPhone 17 Pro',    colors: ['Black Titanium','White Titanium','Natural Titanium','Desert Titanium'], storages: [{ size:'256GB', price:17680 },{ size:'512GB', price:20700 }] },
-        { name: 'iPhone 17 Pro Max',colors: ['Black Titanium','White Titanium','Natural Titanium','Desert Titanium'], storages: [{ size:'256GB', price:22100 },{ size:'512GB', price:25800 }] },
+        { name: 'iPhone 17',        colors: ['Black','White','Mist Blue','Sage','Lavender'],                storages: [{ size:'256GB', price:13900 },{ size:'512GB', price:17500 }] },
+        { name: 'iPhone 17 Pro',    colors: ['Silver','Cosmic Orange','Deep Blue'],                          storages: [{ size:'256GB', price:17680 },{ size:'512GB', price:20700 }] },
+        { name: 'iPhone 17 Pro Max',colors: ['Silver','Cosmic Orange','Deep Blue'],                          storages: [{ size:'256GB', price:22100 },{ size:'512GB', price:25800 }] },
       ],
     },
   },
   Samsung: {
     series: {
       'Galaxy S22': [
-        { name: 'Galaxy S22',      colors: ['Phantom Black','Phantom White','Pink Gold','Green'], storages: [{ size:'128GB', price:5290.90 },{ size:'256GB', price:5660.00 }] },
-        { name: 'Galaxy S22+',     colors: ['Phantom Black','Phantom White','Pink Gold','Green'], storages: [{ size:'128GB', price:5530.81 },{ size:'256GB', price:6213.63 }] },
-        { name: 'Galaxy S22 Ultra',colors: ['Phantom Black','Phantom White','Burgundy','Green'],  storages: [{ size:'128GB', price:8335.89 },{ size:'256GB', price:8059.08 },{ size:'512GB', price:9166.35 }] },
+        { name: 'Galaxy S22',      colors: ['Phantom Black','Phantom White','Pink Gold','Green'], storages: [{ size:'128GB', price:5300 },{ size:'256GB', price:5650 }] },
+        { name: 'Galaxy S22+',     colors: ['Phantom Black','Phantom White','Pink Gold','Green'], storages: [{ size:'128GB', price:5550 },{ size:'256GB', price:6200 }] },
+        { name: 'Galaxy S22 Ultra',colors: ['Phantom Black','Phantom White','Burgundy','Green'],  storages: [{ size:'128GB', price:8350 },{ size:'256GB', price:8050 },{ size:'512GB', price:9150 }] },
       ],
       'Galaxy S23': [
-        { name: 'Galaxy S23',      colors: ['Phantom Black','Cream','Green','Lavender'],   storages: [{ size:'128GB', price:6029.08 },{ size:'256GB', price:7136.35 }] },
-        { name: 'Galaxy S23 FE',   colors: ['Mint','Cream','Graphite','Purple'],           storages: [{ size:'128GB', price:5844.54 }] },
-        { name: 'Galaxy S23+',     colors: ['Phantom Black','Cream','Green','Lavender'],   storages: [{ size:'256GB', price:7689.99 }] },
-        { name: 'Galaxy S23 Ultra',colors: ['Phantom Black','Cream','Green','Lavender'],   storages: [{ size:'256GB', price:10273.62 },{ size:'512GB', price:10827.25 }] },
+        { name: 'Galaxy S23',      colors: ['Phantom Black','Cream','Green','Lavender'],   storages: [{ size:'128GB', price:6050 },{ size:'256GB', price:7150 }] },
+        { name: 'Galaxy S23 FE',   colors: ['Mint','Cream','Graphite','Purple'],           storages: [{ size:'128GB', price:5850 }] },
+        { name: 'Galaxy S23+',     colors: ['Phantom Black','Cream','Green','Lavender'],   storages: [{ size:'256GB', price:7700 }] },
+        { name: 'Galaxy S23 Ultra',colors: ['Phantom Black','Cream','Green','Lavender'],   storages: [{ size:'256GB', price:10250 },{ size:'512GB', price:10850 }] },
       ],
       'Galaxy S24': [
-        { name: 'Galaxy S24',      colors: ['Onyx Black','Marble Gray','Cobalt Violet','Amber Yellow'],            storages: [{ size:'128GB', price:8612.71 },{ size:'256GB', price:8981.80 }] },
-        { name: 'Galaxy S24 FE',   colors: ['Blue','Graphite','Gray','Mint','Yellow'],                             storages: [{ size:'128GB', price:7689.99 }] },
-        { name: 'Galaxy S24+',     colors: ['Onyx Black','Marble Gray','Cobalt Violet','Amber Yellow'],            storages: [{ size:'256GB', price:8981.80 },{ size:'512GB', price:9904.53 }] },
-        { name: 'Galaxy S24 Ultra',colors: ['Titanium Black','Titanium Gray','Titanium Violet','Titanium Yellow'], storages: [{ size:'256GB', price:11380.89 },{ size:'512GB', price:12672.70 }] },
+        { name: 'Galaxy S24',      colors: ['Onyx Black','Marble Gray','Cobalt Violet','Amber Yellow'],            storages: [{ size:'128GB', price:8600 },{ size:'256GB', price:9000 }] },
+        { name: 'Galaxy S24 FE',   colors: ['Blue','Graphite','Gray','Mint','Yellow'],                             storages: [{ size:'128GB', price:7700 }] },
+        { name: 'Galaxy S24+',     colors: ['Onyx Black','Marble Gray','Cobalt Violet','Amber Yellow'],            storages: [{ size:'256GB', price:9000 },{ size:'512GB', price:9900 }] },
+        { name: 'Galaxy S24 Ultra',colors: ['Titanium Black','Titanium Gray','Titanium Violet','Titanium Yellow'], storages: [{ size:'256GB', price:11400 },{ size:'512GB', price:12650 }] },
       ],
       'Galaxy S25': [
-        { name: 'Galaxy S25',      colors: ['Navy','Icyblue','Mint','Silver Shadow'],                                     storages: [{ size:'128GB', price:10365.89 }] },
-        { name: 'Galaxy S25 FE',   colors: ['Navy','Jetblack','White','Icyblue'],                                         storages: [{ size:'128GB', price:8612.71 }] },
-        { name: 'Galaxy S25+',     colors: ['Navy','Icyblue','Mint','Silver Shadow'],                                     storages: [{ size:'256GB', price:12672.70 }] },
-        { name: 'Galaxy S25 Edge', colors: ['Titanium Silver','Titanium Jetblack','Titanium Icyblue'],                    storages: [{ size:'256GB', price:9719.98 },{ size:'512GB', price:12119.07 }] },
-        { name: 'Galaxy S25 Ultra',colors: ['Titanium Silverblue','Titanium Black','Titanium Whitesilver','Titanium Gray'], storages: [{ size:'256GB', price:14518.15 },{ size:'512GB', price:15994.51 }] },
+        { name: 'Galaxy S25',      colors: ['Navy','Icyblue','Mint','Silver Shadow'],                                     storages: [{ size:'128GB', price:10350 }] },
+        { name: 'Galaxy S25 FE',   colors: ['Navy','Jetblack','White','Icyblue'],                                         storages: [{ size:'128GB', price:8600 }] },
+        { name: 'Galaxy S25+',     colors: ['Navy','Icyblue','Mint','Silver Shadow'],                                     storages: [{ size:'256GB', price:12650 }] },
+        { name: 'Galaxy S25 Edge', colors: ['Titanium Silver','Titanium Jetblack','Titanium Icyblue'],                    storages: [{ size:'256GB', price:9700 },{ size:'512GB', price:12100 }] },
+        { name: 'Galaxy S25 Ultra',colors: ['Titanium Silverblue','Titanium Black','Titanium Whitesilver','Titanium Gray'], storages: [{ size:'256GB', price:14500 },{ size:'512GB', price:16000 }] },
       ],
       'Galaxy S26': [
-        { name: 'Galaxy S26',      colors: ['Onyx Black','Silver','Blue'], storages: [{ size:'256GB', price:14149.06 },{ size:'512GB', price:15939.15 }] },
-        { name: 'Galaxy S26+',     colors: ['Onyx Black','Silver','Blue'], storages: [{ size:'256GB', price:17378.60 },{ size:'512GB', price:17470.87 }] },
-        { name: 'Galaxy S26 Ultra',colors: ['Onyx Black','Silver','Blue'], storages: [{ size:'256GB', price:18818.05 },{ size:'512GB', price:21180.22 }] },
+        { name: 'Galaxy S26',      colors: ['Onyx Black','Silver','Blue'], storages: [{ size:'256GB', price:14150 },{ size:'512GB', price:15950 }] },
+        { name: 'Galaxy S26+',     colors: ['Onyx Black','Silver','Blue'], storages: [{ size:'256GB', price:17350 },{ size:'512GB', price:17450 }] },
+        { name: 'Galaxy S26 Ultra',colors: ['Onyx Black','Silver','Blue'], storages: [{ size:'256GB', price:18800 },{ size:'512GB', price:21200 }] },
       ],
       'Galaxy Z Flip': [
-        { name: 'Galaxy Z Flip3', colors: ['Phantom Black','Cream','Green','Lavender'],  storages: [{ size:'128GB', price:5752.26 }] },
-        { name: 'Galaxy Z Flip4', colors: ['Bora Purple','Graphite','Pink Gold','Blue'], storages: [{ size:'128GB', price:6213.63 },{ size:'256GB', price:6582.72 }] },
-        { name: 'Galaxy Z Flip5', colors: ['Mint','Graphite','Cream','Lavender'],        storages: [{ size:'512GB', price:7874.53 }] },
-        { name: 'Galaxy Z Flip6', colors: ['Silver Shadow','Yellow','Blue','Mint'],      storages: [{ size:'256GB', price:8612.71 },{ size:'512GB', price:9904.53 }] },
-        { name: 'Galaxy Z Flip7', colors: ['Blue Shadow','Jetblack','Coralred'],         storages: [{ size:'256GB', price:13595.43 },{ size:'512GB', price:16363.60 }] },
+        { name: 'Galaxy Z Flip3', colors: ['Phantom Black','Cream','Green','Lavender'],  storages: [{ size:'128GB', price:5750 }] },
+        { name: 'Galaxy Z Flip4', colors: ['Bora Purple','Graphite','Pink Gold','Blue'], storages: [{ size:'128GB', price:6200 },{ size:'256GB', price:6600 }] },
+        { name: 'Galaxy Z Flip5', colors: ['Mint','Graphite','Cream','Lavender'],        storages: [{ size:'512GB', price:7900 }] },
+        { name: 'Galaxy Z Flip6', colors: ['Silver Shadow','Yellow','Blue','Mint'],      storages: [{ size:'256GB', price:8600 },{ size:'512GB', price:9900 }] },
+        { name: 'Galaxy Z Flip7', colors: ['Blue Shadow','Jetblack','Coralred'],         storages: [{ size:'256GB', price:13600 },{ size:'512GB', price:16350 }] },
       ],
       'Galaxy Z Fold': [
-        { name: 'Galaxy Z Fold3', colors: ['Phantom Black','Phantom Green','Phantom Silver'], storages: [{ size:'256GB', price:7320.90 },{ size:'512GB', price:8243.62 }] },
-        { name: 'Galaxy Z Fold4', colors: ['Graygreen','Beige','Phantom Black'],              storages: [{ size:'512GB', price:9904.53 }] },
-        { name: 'Galaxy Z Fold5', colors: ['Icy Blue','Phantom Black','Cream'],               storages: [{ size:'256GB', price:12303.61 },{ size:'512GB', price:14905.69 }] },
-        { name: 'Galaxy Z Fold6', colors: ['Silver Shadow','Pink','Navy'],                    storages: [{ size:'512GB', price:14149.06 }] },
-        { name: 'Galaxy Z Fold7', colors: ['Blue Shadow','Silver Shadow','Jetblack'],         storages: [{ size:'256GB', price:17009.51 },{ size:'512GB', price:20977.23 },{ size:'1TB', price:21899.95 }] },
+        { name: 'Galaxy Z Fold3', colors: ['Phantom Black','Phantom Green','Phantom Silver'], storages: [{ size:'256GB', price:7300 },{ size:'512GB', price:8250 }] },
+        { name: 'Galaxy Z Fold4', colors: ['Graygreen','Beige','Phantom Black'],              storages: [{ size:'512GB', price:9900 }] },
+        { name: 'Galaxy Z Fold5', colors: ['Icy Blue','Phantom Black','Cream'],               storages: [{ size:'256GB', price:12300 },{ size:'512GB', price:14900 }] },
+        { name: 'Galaxy Z Fold6', colors: ['Silver Shadow','Pink','Navy'],                    storages: [{ size:'512GB', price:14150 }] },
+        { name: 'Galaxy Z Fold7', colors: ['Blue Shadow','Silver Shadow','Jetblack'],         storages: [{ size:'256GB', price:17000 },{ size:'512GB', price:21000 },{ size:'1TB', price:21900 }] },
       ],
     },
   },
@@ -264,7 +271,7 @@ const CATALOG: Record<string, BrandData> = {
 const COLOR_HEX: Record<string, string> = {
   'Black':'#1c1c1e','White':'#f5f5f7','Red':'#e41e33','Blue':'#215e7c','Green':'#394c38','Purple':'#e5dbea',
   'Pacific Blue':'#2b3e4e','Gold':'#f5e6c8','Graphite':'#5a5752','Silver':'#e3e3e3',
-  'Midnight':'#171e27','Starlight':'#f9f6ef','Pink':'#fae0d8',
+  'Midnight':'#171e27','Starlight':'#f9f6ef','Pink':'#fae0d8','(PRODUCT)RED':'#b51f2b',
   'Alpine Green':'#4a5c4b','Sierra Blue':'#a8c5d4',
   'Yellow':'#f5e642','Deep Purple':'#4a3764','Space Black':'#1c1c1e',
   'Black Titanium':'#2e2e2e','White Titanium':'#f5f5f0','Blue Titanium':'#2b3b4f','Natural Titanium':'#8c8983',
@@ -285,7 +292,47 @@ const COLOR_HEX: Record<string, string> = {
   'Titanium Jetblack':'#161618','Titanium Icyblue':'#b6d2e2','Gray':'#8e8e93','Blue Shadow':'#5a6f8f',
   'Coralred':'#e8564a','Bora Purple':'#b09fce','Phantom Green':'#3d4a3f','Phantom Silver':'#d8d8d8',
   'Graygreen':'#8a9a8a','Beige':'#e0d4c0','Icy Blue':'#c2dcec',
+  'Cosmic Orange':'#d96b38','Deep Blue':'#253b62','Mist Blue':'#a9c9db',
 };
+
+// Apple reuses names such as Blue, Green, and Silver across generations, but
+// the actual finish changes from one model family to another.
+const MODEL_COLOR_HEX: Record<string, Record<string, string>> = {
+  'iPhone 12': {
+    Black: '#1c1c1e', White: '#f5f5f7', '(PRODUCT)RED': '#bf0013',
+    Blue: '#315f76', Green: '#394c38', Purple: '#b7a7c9',
+  },
+  'iPhone 13': {
+    '(PRODUCT)RED': '#a51f2d', Starlight: '#f3eee3', Midnight: '#202833',
+    Blue: '#537a96', Pink: '#e9b7c2', Green: '#7f9b86',
+  },
+  'iPhone 14': {
+    Midnight: '#1d2025', Purple: '#b5a6d0', Starlight: '#f0eee8',
+    '(PRODUCT)RED': '#a6192e', Blue: '#a9c7d7', Yellow: '#e4c34e',
+  },
+  'iPhone 15': {
+    Black: '#282828', Blue: '#9ebbd0', Green: '#b7d5c1',
+    Yellow: '#e7d18b', Pink: '#e7b8c4',
+  },
+  'iPhone 16': {
+    Black: '#252525', White: '#f2f1ed', Pink: '#e5adb9',
+    Teal: '#6eaaa4', Ultramarine: '#526bba',
+  },
+  'iPhone 17': {
+    Black: '#222222', White: '#f5f4ef', 'Mist Blue': '#abc8d8',
+    Sage: '#9caf9c', Lavender: '#b9a9c8',
+  },
+  'iPhone 17 Pro': {
+    Silver: '#bfc1c3', 'Cosmic Orange': '#d9723b', 'Deep Blue': '#283d68',
+  },
+  'iPhone 17 Pro Max': {
+    Silver: '#bfc1c3', 'Cosmic Orange': '#d9723b', 'Deep Blue': '#283d68',
+  },
+};
+
+function colorHex(modelName: string, color: string) {
+  return MODEL_COLOR_HEX[modelName]?.[color] ?? COLOR_HEX[color] ?? '#888';
+}
 
 const BRAND_ICONS: Record<string, React.ElementType> = {
   'iPhone': SiApple,
@@ -460,6 +507,13 @@ export default function TechStore() {
   const [model,   setModel]   = useState<PhoneModel | null>(null);
   const [storage, setStorage] = useState<StorageOption | null>(null);
   const [color,   setColor]   = useState<string | null>(null);
+  const [customer, setCustomer] = useState<CustomerDetails>({
+    name: '',
+    contactDetails: '',
+    phone: '',
+    email: '',
+    address: '',
+  });
 
   // Inline selection state on the model step
   const [selectedModelName, setSelectedModelName] = useState<string | null>(null);
@@ -483,6 +537,7 @@ export default function TechStore() {
     setDirection(-1);
     setBrand(null); setSeries(null); setModel(null); setStorage(null); setColor(null);
     setSelectedModelName(null); setPayMethod(null); setProofFile(null); setStep(0);
+    setCustomer({ name: '', contactDetails: '', phone: '', email: '', address: '' });
   };
 
   const crumbs: { label: string; step: number }[] = [];
@@ -496,7 +551,12 @@ export default function TechStore() {
     { id: 'absa',   label: 'ABSA Bank Transfer',  icon: '🏦' },
   ];
 
-  const canConfirm = () => payMethod !== null && proofFile !== null;
+  const customerComplete = Object.values(customer).every(value => value.trim().length > 0);
+  const canConfirm = () => customerComplete && payMethod !== null && proofFile !== null;
+
+  const updateCustomer = (field: keyof CustomerDetails, value: string) => {
+    setCustomer(current => ({ ...current, [field]: value }));
+  };
 
   const renderUpload = () => (
     <div className="pt-2">
@@ -719,14 +779,14 @@ export default function TechStore() {
                   {selModel.colors.map(c => (
                     <button key={c} onClick={() => setColor(c)}
                       title={c}
-                      className={`relative w-8 h-8 rounded-full transition-all duration-200 hover:scale-110 active:scale-95
+                      aria-label={`Select ${c}`}
+                      className={`flex items-center gap-2 px-2 py-1.5 rounded-xl border transition-all duration-200 hover:border-primary/50 active:scale-95
                         ${color === c ? 'ring-2 ring-primary ring-offset-2 ring-offset-card scale-110' : 'ring-1 ring-white/10'}`}
-                      style={{ backgroundColor: COLOR_HEX[c] ?? '#888' }}>
-                      {color === c && (
-                        <span className="absolute inset-0 flex items-center justify-center">
-                          <Check className="w-3 h-3 text-white drop-shadow" />
-                        </span>
-                      )}
+                    >
+                      <span className="w-6 h-6 rounded-full border border-white/20 flex-shrink-0" style={{ backgroundColor: colorHex(selModel.name, c) }}>
+                        {color === c && <Check className="w-3 h-3 text-white drop-shadow m-auto mt-1.5" />}
+                      </span>
+                      <span className="text-xs text-muted-foreground whitespace-nowrap">{c}</span>
                     </button>
                   ))}
                 </div>
@@ -765,7 +825,7 @@ export default function TechStore() {
               <p className="text-lg md:text-2xl font-semibold tracking-tight">{model.name}</p>
               <p className="text-sm text-muted-foreground mt-1">{storage.size} · {color}</p>
               <div className="flex items-center gap-2 mt-2">
-                <div className="w-4 h-4 rounded-full border border-white/20 flex-shrink-0" style={{ backgroundColor: COLOR_HEX[color] ?? '#888' }} />
+                <div className="w-4 h-4 rounded-full border border-white/20 flex-shrink-0" style={{ backgroundColor: colorHex(model.name, color) }} />
                 <span className="text-xs text-muted-foreground">{color}</span>
               </div>
               <p className="text-2xl font-semibold text-primary mt-3">{formatPrice(storage.price)}</p>
@@ -793,6 +853,46 @@ export default function TechStore() {
           </p>
         </div>
 
+        {/* Customer details */}
+        <div className="bg-card/40 backdrop-blur-md border border-border/40 rounded-[2rem] p-5 flex-shrink-0">
+          <div className="mb-4">
+            <p className="text-sm text-muted-foreground uppercase tracking-widest">Your Details</p>
+            <p className="text-xs text-muted-foreground mt-1">Required for order confirmation and delivery.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label className="text-xs text-muted-foreground">
+              Full name
+              <input value={customer.name} onChange={e => updateCustomer('name', e.target.value)}
+                placeholder="Your name and surname" required
+                className="mt-1.5 w-full rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
+            </label>
+            <label className="text-xs text-muted-foreground">
+              Contact details
+              <input value={customer.contactDetails} onChange={e => updateCustomer('contactDetails', e.target.value)}
+                placeholder="WhatsApp or preferred contact" required
+                className="mt-1.5 w-full rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
+            </label>
+            <label className="text-xs text-muted-foreground">
+              Phone number
+              <input type="tel" value={customer.phone} onChange={e => updateCustomer('phone', e.target.value)}
+                placeholder="+267 7X XXX XXX" required
+                className="mt-1.5 w-full rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
+            </label>
+            <label className="text-xs text-muted-foreground">
+              Email
+              <input type="email" value={customer.email} onChange={e => updateCustomer('email', e.target.value)}
+                placeholder="you@example.com" required
+                className="mt-1.5 w-full rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
+            </label>
+            <label className="text-xs text-muted-foreground sm:col-span-2">
+              Delivery address <span className="text-primary">(Place of residence — O nna kae?)</span>
+              <textarea value={customer.address} onChange={e => updateCustomer('address', e.target.value)}
+                placeholder="Village / town, ward, plot or house number, and any delivery directions" required rows={2}
+                className="mt-1.5 w-full resize-none rounded-xl border border-border/40 bg-background/40 px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary/60" />
+            </label>
+          </div>
+        </div>
+
         {/* Payment */}
         <div className="bg-card/40 backdrop-blur-md border border-border/40 rounded-[2rem] p-5 flex-shrink-0">
           <p className="text-sm text-muted-foreground uppercase tracking-widest mb-3">Choose Payment</p>
@@ -814,7 +914,7 @@ export default function TechStore() {
           className="w-full py-4 rounded-2xl font-semibold text-base transition-all flex items-center justify-center gap-2 flex-shrink-0
             bg-primary text-primary-foreground hover:opacity-90 hover:-translate-y-0.5
             disabled:opacity-30 disabled:cursor-not-allowed disabled:translate-y-0">
-          {canConfirm() ? 'Confirm Order' : 'Upload proof to confirm'}
+           {!customerComplete ? 'Complete your details to continue' : !payMethod ? 'Choose a payment method' : !proofFile ? 'Upload proof to confirm' : 'Confirm Order'}
         </button>
       </div>
     );
