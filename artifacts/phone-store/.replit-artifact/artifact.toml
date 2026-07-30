@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Refurbished Phone Store"
+version = "1.0.0"
+id = "artifacts/phone-store"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21159
+
+[services.development]
+run = "pnpm --filter @workspace/phone-store run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/phone-store", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/phone-store/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21159"
+BASE_PATH = "/"
